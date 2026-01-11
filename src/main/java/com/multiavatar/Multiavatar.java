@@ -22,9 +22,11 @@ import java.util.regex.Pattern;
  */
 public class Multiavatar {
 
-    private static final String SVG_START = "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 231 231\">";
+	private static final String SVG_START = "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 231 231\">";
     private static final String SVG_END = "</svg>";
     private static final String STROKE = "stroke-linecap:round;stroke-linejoin:round;stroke-width:";
+
+    private static final Pattern PLACEHOLDER_PATTERN = Pattern.compile("#([^;]*);");
 
     /**
      * Generates an avatar SVG from the given string.
@@ -178,8 +180,7 @@ public class Multiavatar {
         // Replace color placeholders
         // Use JavaScript-compatible replacement: String.replace() in a loop
         // This has a "bug" where replacing A→B then B→C will re-replace the new B
-        Pattern pattern = Pattern.compile("#([^;]*);");
-        Matcher matcher = pattern.matcher(svgTemplate);
+        Matcher matcher = PLACEHOLDER_PATTERN.matcher(svgTemplate);
 
         // First, collect all matches
         java.util.List<String> matches = new java.util.ArrayList<>();

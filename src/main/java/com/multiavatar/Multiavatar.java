@@ -1,7 +1,6 @@
 package com.multiavatar;
 
 import java.util.Random;
-import java.util.regex.Pattern;
 
 /**
  * Multiavatar - Multicultural Avatar Generator

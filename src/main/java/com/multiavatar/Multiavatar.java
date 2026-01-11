@@ -178,7 +178,7 @@ public class Multiavatar {
         // Replace color placeholders
         // Use JavaScript-compatible replacement: String.replace() in a loop
         // This has a "bug" where replacing A→B then B→C will re-replace the new B
-        Pattern pattern = Pattern.compile("#(.*?);");
+        Pattern pattern = Pattern.compile("#([^;]*);");
         Matcher matcher = pattern.matcher(svgTemplate);
 
         // First, collect all matches

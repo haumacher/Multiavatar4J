@@ -29,8 +29,8 @@
     </developers>
 
     <scm>
-        <connection>scm:git:git://github.com/multiavatar/Multiavatar.git</connection>
-        <developerConnection>scm:git:ssh://github.com:multiavatar/Multiavatar.git</developerConnection>
+        <connection>scm:git:https://github.com/multiavatar/Multiavatar.git</connection>
+        <developerConnection>scm:git:https://github.com/multiavatar/Multiavatar.git</developerConnection>
         <url>https://github.com/multiavatar/Multiavatar</url>
     </scm>
 

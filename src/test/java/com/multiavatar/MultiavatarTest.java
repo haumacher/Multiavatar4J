@@ -15,6 +15,8 @@ public class MultiavatarTest {
         assertTrue("SVG should start with <svg", svg.startsWith("<svg"));
         assertTrue("SVG should end with </svg>", svg.endsWith("</svg>"));
         assertTrue("SVG should contain viewBox", svg.contains("viewBox"));
+        assertTrue("SVG should contain metadata with creator", svg.contains("<dc:creator>Multiavatar</dc:creator>"));
+        assertTrue("SVG should contain metadata with source", svg.contains("<dc:source>https://multiavatar.com</dc:source>"));
     }
 
     @Test

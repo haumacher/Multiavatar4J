@@ -68,8 +68,12 @@ public class CrossPlatformCompatibilityTest {
                     javaOutput = Multiavatar.generate(vector.input, vector.sansEnv);
                 }
 
+                // Strip attribution metadata from Java output for comparison
+                // (Java adds metadata for license compliance)
+                String javaOutputStripped = javaOutput.replace("<metadata><dc:creator>Multiavatar</dc:creator><dc:source>https://multiavatar.com</dc:source></metadata>", "");
+
                 // Compare with JavaScript output
-                if (javaOutput.equals(vector.output)) {
+                if (javaOutputStripped.equals(vector.output)) {
                     passed++;
                 } else {
                     failed++;
@@ -77,14 +81,15 @@ public class CrossPlatformCompatibilityTest {
                         " [" + vector.version.part + vector.version.theme + "]" : "";
                     String failureMsg = String.format(
                         "Case %d FAILED: \"%s\"%s sansEnv=%b\n" +
-                        "  Expected length: %d, Got: %d\n" +
+                        "  Expected length: %d, Got: %d (stripped: %d)\n" +
                         "  Output differs from JavaScript implementation",
                         vector.id,
                         vector.input.length() > 30 ? vector.input.substring(0, 30) + "..." : vector.input,
                         versionStr,
                         vector.sansEnv,
                         vector.output.length(),
-                        javaOutput.length()
+                        javaOutput.length(),
+                        javaOutputStripped.length()
                     );
                     failures.add(failureMsg);
                     System.err.println(failureMsg);

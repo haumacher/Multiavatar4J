@@ -96,6 +96,9 @@ public class Multiavatar {
         // Get the SVG code for each part
         StringBuilder result = new StringBuilder(SVG_START);
 
+        // Add generator attribution (fulfills license requirement)
+        result.append("<metadata><dc:creator>Multiavatar</dc:creator><dc:source>https://multiavatar.com</dc:source></metadata>");
+
         for (String partName : new String[]{"env", "head", "clo", "top", "eyes", "mouth"}) {
             String partValue = parts.getValue(partName);
             String partId = partValue.substring(0, 2);

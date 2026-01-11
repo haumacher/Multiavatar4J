@@ -277,20 +277,18 @@ class SvgData {
 			}
 		}
 		
-		public String expand(String[] values) {
-			StringBuilder result = new StringBuilder();
-			for (Segment segment : _segments) {
-				result.append(segment.expand(values));
-			}
-			return result.toString();
-		}
-
 		public String toSource() {
 			StringBuilder result = new StringBuilder();
 			for (Segment segment : _segments) {
 				result.append(segment.source());
 			}
 			return result.toString();
+		}
+
+		public void render(StringBuilder result, String[] colors) {
+			for (Segment segment : _segments) {
+				result.append(segment.expand(colors));
+			}
 		}
 		
 	}

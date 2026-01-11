@@ -77,58 +77,8 @@ public class Multiavatar {
      * @return The complete SVG code as a string
      */
     public static String generate(CharacterType character, CharacterTheme theme, boolean sansEnv) {
-        Avatar avatar = Avatar.fromCharacterTheme(character, theme);
+        Avatar avatar = Avatar.pure(character, theme);
         return avatar.render(sansEnv);
-    }
-
-    /**
-     * Converts a 2-digit decimal string (0-99) to a part number (0-47)
-     */
-    private static int getPartNumber(String digitPair) {
-        int value = Integer.parseInt(digitPair);
-        return Math.round((47f / 100f) * value);
-    }
-
-    /**
-     * Gets the final SVG string for a part with colors applied from the theme
-     */
-    private static String getFinalSvg(AvatarPart part, CharacterType character, CharacterTheme theme) {
-        if (character == null) {
-            return "";
-        }
-
-        // Get theme colors
-        ThemeData.CharacterThemes characterThemes = ThemeData.getCharacterThemes(character);
-        if (characterThemes == null) {
-            return "";
-        }
-
-        ThemeData.Theme themeData = characterThemes.getTheme(theme);
-        if (themeData == null) {
-            return "";
-        }
-
-        String[] colors = getColorsForPart(themeData, part);
-
-        // Get SVG template
-        Template svgTemplate = SvgData.getSvgTemplate(character, part);
-
-        return svgTemplate.expand(colors);
-    }
-
-    /**
-     * Gets the color array for a specific part from theme data
-     */
-    private static String[] getColorsForPart(ThemeData.Theme theme, AvatarPart part) {
-        switch (part) {
-            case ENV: return theme.env;
-            case CLO: return theme.clo;
-            case HEAD: return theme.head;
-            case MOUTH: return theme.mouth;
-            case EYES: return theme.eyes;
-            case TOP: return theme.top;
-            default: return new String[0];
-        }
     }
 
     /**
@@ -153,7 +103,7 @@ public class Multiavatar {
     /**
 	 * The avatar configuration
 	 */
-	private static class Avatar {
+	public static class Avatar {
 	    Coordinate env;
 	    Coordinate clo;
 	    Coordinate head;
@@ -199,7 +149,15 @@ public class Multiavatar {
 	        return avatar;
 		}
 
-		public static Avatar fromCharacterTheme(CharacterType character, CharacterTheme theme) {
+	    /**
+	     * Converts a 2-digit decimal string (0-99) to a part number (0-47)
+	     */
+	    private static int getPartNumber(String digitPair) {
+	        int value = Integer.parseInt(digitPair);
+	        return Math.round((47f / 100f) * value);
+	    }
+
+		public static Avatar pure(CharacterType character, CharacterTheme theme) {
 			Avatar avatar = new Avatar();
 			Coordinate coordinate = new Coordinate(character, theme);
 			avatar.env = coordinate;
@@ -217,7 +175,7 @@ public class Multiavatar {
 		 * @param sansEnv If true, renders without the circular background
 		 * @return The complete SVG code as a string
 		 */
-		String render(boolean sansEnv) {
+		public String render(boolean sansEnv) {
 			StringBuilder result = new StringBuilder(SVG_START);
 
 			// Add generator attribution (fulfills license requirement)
@@ -229,8 +187,7 @@ public class Multiavatar {
 				}
 
 				Coordinate coordinate = getValue(part);
-				String svgPart = getFinalSvg(part, coordinate.character, coordinate.theme);
-				result.append(svgPart);
+				coordinate.renderPart(result, part);
 			}
 
 			result.append(SVG_END);
@@ -261,16 +218,19 @@ public class Multiavatar {
 	    }
 	
 	    /**
-	     * Parse AvatarPart from string name
-	     */
-	    public static AvatarPart fromString(String name) {
-	        for (AvatarPart part : values()) {
-	            if (part.name.equals(name)) {
-	                return part;
-	            }
-	        }
-	        return null;
-	    }
+		 * Gets the color array for a specific part from theme data
+		 */
+		public String[] getColors(ThemeData.Theme theme) {
+		    switch (this) {
+		        case ENV: return theme.env;
+		        case CLO: return theme.clo;
+		        case HEAD: return theme.head;
+		        case MOUTH: return theme.mouth;
+		        case EYES: return theme.eyes;
+		        case TOP: return theme.top;
+		        default: return new String[0];
+		    }
+		}
 	}
 
 	/**
@@ -285,6 +245,34 @@ public class Multiavatar {
 	        this.theme = theme;
 	    }
 	
+	    
+		/**
+		 * Produces the final SVG string for a part with colors applied from the theme
+		 */
+		public void renderPart(StringBuilder result, AvatarPart part) {
+		    if (character == null) {
+		        return;
+		    }
+		
+		    // Get theme colors
+		    ThemeData.CharacterThemes characterThemes = ThemeData.getCharacterThemes(character);
+		    if (characterThemes == null) {
+		        return;
+		    }
+		
+		    ThemeData.Theme themeData = characterThemes.getTheme(theme);
+		    if (themeData == null) {
+		        return;
+		    }
+		
+		    String[] colors = part.getColors(themeData);
+		
+		    // Get SVG template
+		    Template svgTemplate = SvgData.getSvgTemplate(character, part);
+		
+		    svgTemplate.render(result, colors);
+		}
+	    
 	    /**
 	     * Creates a PartWithTheme from a part number (0-47)
 	     */

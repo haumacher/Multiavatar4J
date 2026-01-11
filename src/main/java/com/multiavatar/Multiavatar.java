@@ -173,19 +173,23 @@ public class Multiavatar {
         }
 
         // Replace color placeholders
-        String result = svgTemplate;
+        // Use JavaScript-compatible replacement: String.replace() in a loop
+        // This has a "bug" where replacing A→B then B→C will re-replace the new B
         Pattern pattern = Pattern.compile("#(.*?);");
         Matcher matcher = pattern.matcher(svgTemplate);
 
-        int colorIndex = 0;
-        StringBuffer sb = new StringBuffer();
-        while (matcher.find() && colorIndex < colors.length) {
-            String replacement = colors[colorIndex] + ";";
-            matcher.appendReplacement(sb, Matcher.quoteReplacement(replacement));
-            colorIndex++;
+        // First, collect all matches
+        java.util.List<String> matches = new java.util.ArrayList<>();
+        while (matcher.find()) {
+            matches.add(matcher.group(0));
         }
-        matcher.appendTail(sb);
-        result = sb.toString();
+
+        // Then replace them one by one (JavaScript behavior)
+        String result = svgTemplate;
+        for (int i = 0; i < matches.size() && i < colors.length; i++) {
+            // JavaScript uses String.replace() which replaces FIRST occurrence
+            result = result.replaceFirst(java.util.regex.Pattern.quote(matches.get(i)), colors[i] + ";");
+        }
 
         return result;
     }

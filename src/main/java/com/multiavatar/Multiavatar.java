@@ -22,7 +22,7 @@ import java.util.regex.Pattern;
  */
 public class Multiavatar {
 
-    private static final String SVG_START = "<svg viewBox='0 0 231 231' fill='none' xmlns='http://www.w3.org/2000/svg'>";
+    private static final String SVG_START = "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 231 231\">";
     private static final String SVG_END = "</svg>";
     private static final String STROKE = "stroke-linecap:round;stroke-linejoin:round;stroke-width:";
 
@@ -60,11 +60,19 @@ public class Multiavatar {
             string = "";
         }
 
+        // Return empty string for empty input (JavaScript compatibility)
+        if (string.length() == 0) {
+            return "";
+        }
+
         // Get SHA-256 hash
         String hash = sha256(string);
 
-        // Extract first 12 characters of hash
-        String hashString = hash.substring(0, 12);
+        // Remove all non-digits from hash (JavaScript compatibility)
+        String hashDigitsOnly = hash.replaceAll("\\D", "");
+
+        // Extract first 12 digits
+        String hashString = hashDigitsOnly.substring(0, Math.min(12, hashDigitsOnly.length()));
 
         // Convert hash string to parts (6 parts, 2 digits each)
         Parts parts = new Parts();
@@ -88,7 +96,7 @@ public class Multiavatar {
         // Get the SVG code for each part
         StringBuilder result = new StringBuilder(SVG_START);
 
-        for (String partName : new String[]{"env", "clo", "head", "mouth", "eyes", "top"}) {
+        for (String partName : new String[]{"env", "head", "clo", "top", "eyes", "mouth"}) {
             String partValue = parts.getValue(partName);
             String partId = partValue.substring(0, 2);
             char theme = partValue.charAt(2);
@@ -113,10 +121,10 @@ public class Multiavatar {
     }
 
     /**
-     * Converts a 2-digit hex string (0-99) to a part number (0-47)
+     * Converts a 2-digit decimal string (0-99) to a part number (0-47)
      */
-    private static int getPartNumber(String hexPair) {
-        int value = Integer.parseInt(hexPair, 16);
+    private static int getPartNumber(String digitPair) {
+        int value = Integer.parseInt(digitPair);
         return Math.round((47f / 100f) * value);
     }
 

@@ -57,7 +57,7 @@ public class MultiavatarTest {
 
     @Test
     public void testNullString() {
-        String svg = Multiavatar.generate(null);
+        String svg = Multiavatar.generate((String) null);
         assertNotNull("Null should return empty string", svg);
         assertEquals("Null should return empty string", "", svg);
     }

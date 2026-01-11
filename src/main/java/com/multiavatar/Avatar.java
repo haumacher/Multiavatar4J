@@ -1,5 +1,7 @@
 package com.multiavatar;
 
+import java.util.Random;
+
 /**
  * The avatar configuration
  */
@@ -59,6 +61,24 @@ public class Avatar {
         avatar.eyes = Avatar.fromPartNumber(getPartNumber(hashString.substring(8, 10)));
         avatar.top = Avatar.fromPartNumber(getPartNumber(hashString.substring(10, 12)));
         return avatar;
+	}
+
+	/**
+	 * Creates a random avatar using the provided Random instance.
+	 *
+	 * @param rnd The Random instance to use for generating random parts
+	 * @return A new Avatar with randomly selected parts
+	 */
+	public static Avatar fromRandom(Random rnd) {
+		Avatar avatar = new Avatar();
+		// Generate random part numbers (0-47) for each avatar part
+		avatar.env = Avatar.fromPartNumber(rnd.nextInt(48));
+		avatar.clo = Avatar.fromPartNumber(rnd.nextInt(48));
+		avatar.head = Avatar.fromPartNumber(rnd.nextInt(48));
+		avatar.mouth = Avatar.fromPartNumber(rnd.nextInt(48));
+		avatar.eyes = Avatar.fromPartNumber(rnd.nextInt(48));
+		avatar.top = Avatar.fromPartNumber(rnd.nextInt(48));
+		return avatar;
 	}
 
     /**

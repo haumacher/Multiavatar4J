@@ -1,6 +1,7 @@
 package com.multiavatar;
 
 import java.security.MessageDigest;
+import java.util.Random;
 import java.util.regex.Pattern;
 
 /**
@@ -76,6 +77,28 @@ public class Multiavatar {
      */
     public static String generate(CharacterType character, Theme theme, boolean sansEnv) {
         Avatar avatar = Avatar.pure(character, theme);
+        return avatar.render(sansEnv);
+    }
+
+    /**
+     * Generates a random avatar SVG using the provided Random instance.
+     *
+     * @param rnd The Random instance to use for generating random parts
+     * @return The complete SVG code as a string
+     */
+    public static String generate(Random rnd) {
+        return generate(rnd, false);
+    }
+
+    /**
+     * Generates a random avatar SVG using the provided Random instance.
+     *
+     * @param rnd     The Random instance to use for generating random parts
+     * @param sansEnv If true, returns the avatar without the circular background
+     * @return The complete SVG code as a string
+     */
+    public static String generate(Random rnd, boolean sansEnv) {
+        Avatar avatar = Avatar.fromRandom(rnd);
         return avatar.render(sansEnv);
     }
 

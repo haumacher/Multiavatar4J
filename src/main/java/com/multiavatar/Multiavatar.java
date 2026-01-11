@@ -29,6 +29,28 @@ public class Multiavatar {
     private static final Pattern PLACEHOLDER_PATTERN = Pattern.compile("#([^;]*);");
 
     /**
+     * Avatar part names in the order they should be rendered
+     */
+    private enum AvatarPart {
+        ENV("env"),
+        HEAD("head"),
+        CLO("clo"),
+        TOP("top"),
+        EYES("eyes"),
+        MOUTH("mouth");
+
+        private final String name;
+
+        AvatarPart(String name) {
+            this.name = name;
+        }
+
+        public String getName() {
+            return name;
+        }
+    }
+
+    /**
      * Generates an avatar SVG from the given string.
      *
      * @param string The input string to generate the avatar from
@@ -101,7 +123,8 @@ public class Multiavatar {
         // Add generator attribution (fulfills license requirement)
         result.append("<metadata xmlns:dc=\"http://purl.org/dc/elements/1.1/\"><dc:creator>Multiavatar</dc:creator><dc:source>https://multiavatar.com</dc:source></metadata>");
 
-        for (String partName : new String[]{"env", "head", "clo", "top", "eyes", "mouth"}) {
+        for (AvatarPart part : AvatarPart.values()) {
+            String partName = part.getName();
             String partValue = parts.getValue(partName);
             String partId = partValue.substring(0, 2);
             char theme = partValue.charAt(2);
@@ -113,7 +136,7 @@ public class Multiavatar {
 
             String svgPart = getFinalSvg(partName, partId, theme);
 
-            if (partName.equals("env") && sansEnv) {
+            if (part == AvatarPart.ENV && sansEnv) {
                 continue; // Skip environment if sansEnv is true
             }
 

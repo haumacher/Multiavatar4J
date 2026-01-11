@@ -18,9 +18,12 @@ import java.util.regex.Pattern;
  * // Generate predefined avatar
  * String predefined = Multiavatar.generate(CharacterType.GIRL, Theme.A);
  *
- * // Generate random avatar
+ * // Generate random avatar with seed (reproducible)
+ * String random = Multiavatar.generate(12345L);
+ *
+ * // Generate random avatar with Random instance
  * Random rnd = new Random();
- * String random = Multiavatar.generate(rnd);
+ * String random2 = Multiavatar.generate(rnd);
  * </pre>
  *
  * @author Gie Katon
@@ -101,6 +104,31 @@ public class Multiavatar {
      * @return The complete SVG code as a string
      */
     public static String generate(Random rnd, boolean sansEnv) {
+        Avatar avatar = Avatar.fromRandom(rnd);
+        return avatar.render(sansEnv);
+    }
+
+    /**
+     * Generates a random avatar SVG using a seed value.
+     * Creates a {@link Random} instance with the provided seed for reproducible randomness.
+     *
+     * @param seed The seed value for the random number generator
+     * @return The complete SVG code as a string
+     */
+    public static String generate(long seed) {
+        return generate(seed, false);
+    }
+
+    /**
+     * Generates a random avatar SVG using a seed value.
+     * Creates a {@link Random} instance with the provided seed for reproducible randomness.
+     *
+     * @param seed    The seed value for the random number generator
+     * @param sansEnv If true, returns the avatar without the circular background
+     * @return The complete SVG code as a string
+     */
+    public static String generate(long seed, boolean sansEnv) {
+        Random rnd = new Random(seed);
         Avatar avatar = Avatar.fromRandom(rnd);
         return avatar.render(sansEnv);
     }

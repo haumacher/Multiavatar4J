@@ -1,6 +1,5 @@
 package com.multiavatar;
 
-import java.security.MessageDigest;
 import java.util.Random;
 import java.util.regex.Pattern;
 
@@ -20,10 +19,6 @@ import java.util.regex.Pattern;
  * @version 1.0.7
  */
 public class Multiavatar {
-
-	static final String SVG_START = "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 231 231\">";
-    static final String SVG_END = "</svg>";
-    private static final String STROKE = "stroke-linecap:round;stroke-linejoin:round;stroke-width:";
 
     /**
      * Generates an avatar SVG from the given identifier.
@@ -100,25 +95,6 @@ public class Multiavatar {
     public static String generate(Random rnd, boolean sansEnv) {
         Avatar avatar = Avatar.fromRandom(rnd);
         return avatar.render(sansEnv);
-    }
-
-    /**
-     * Calculates SHA-256 hash of a string
-     */
-    static String sha256(String input) {
-        try {
-            MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            byte[] hash = digest.digest(input.getBytes("UTF-8"));
-            StringBuilder hexString = new StringBuilder();
-            for (byte b : hash) {
-                String hex = Integer.toHexString(0xff & b);
-                if (hex.length() == 1) hexString.append('0');
-                hexString.append(hex);
-            }
-            return hexString.toString();
-        } catch (Exception e) {
-            throw new RuntimeException("Error calculating SHA-256", e);
-        }
     }
 
 }

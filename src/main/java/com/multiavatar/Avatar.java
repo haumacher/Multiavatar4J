@@ -1,11 +1,17 @@
 package com.multiavatar;
 
+import java.security.MessageDigest;
 import java.util.Random;
 
 /**
  * The avatar configuration
  */
 public class Avatar {
+
+	private static final String SVG_START = "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 231 231\">";
+	private static final String SVG_END = "</svg>";
+    private static final String STROKE = "stroke-linecap:round;stroke-linejoin:round;stroke-width:";
+	
     Coordinate env;
     Coordinate clo;
     Coordinate head;
@@ -39,7 +45,7 @@ public class Avatar {
 
 	public static Avatar fromId(String id) {
 		// Get SHA-256 hash
-        String hash = Multiavatar.sha256(id);
+        String hash = Avatar.sha256(id);
 
         // Remove all non-digits from hash (JavaScript compatibility)
         String hashDigitsOnly = hash.replaceAll("\\D", "");
@@ -49,6 +55,25 @@ public class Avatar {
 
         // Convert hash string to parts (6 parts, 2 digits each)
         return Avatar.fromHash(hashString);
+	}
+	
+	/**
+	 * Calculates SHA-256 hash of a string
+	 */
+	private static String sha256(String input) {
+	    try {
+	        MessageDigest digest = MessageDigest.getInstance("SHA-256");
+	        byte[] hash = digest.digest(input.getBytes("UTF-8"));
+	        StringBuilder hexString = new StringBuilder();
+	        for (byte b : hash) {
+	            String hex = Integer.toHexString(0xff & b);
+	            if (hex.length() == 1) hexString.append('0');
+	            hexString.append(hex);
+	        }
+	        return hexString.toString();
+	    } catch (Exception e) {
+	        throw new RuntimeException("Error calculating SHA-256", e);
+	    }
 	}
     
 	private static Avatar fromHash(String hashString) {
@@ -116,7 +141,7 @@ public class Avatar {
 	 * @return The complete SVG code as a string
 	 */
 	public String render(boolean sansEnv) {
-		StringBuilder result = new StringBuilder(Multiavatar.SVG_START);
+		StringBuilder result = new StringBuilder(SVG_START);
 
 		// Add generator attribution (fulfills license requirement)
 		result.append("<metadata xmlns:dc=\"http://purl.org/dc/elements/1.1/\"><dc:creator>Multiavatar</dc:creator><dc:source>https://multiavatar.com</dc:source></metadata>");
@@ -130,7 +155,7 @@ public class Avatar {
 			coordinate.renderPart(result, part);
 		}
 
-		result.append(Multiavatar.SVG_END);
+		result.append(SVG_END);
 		return result.toString();
 	}
 

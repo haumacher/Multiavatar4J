@@ -75,6 +75,9 @@ public class Example {
 
 ```java
 import com.multiavatar.Multiavatar;
+import com.multiavatar.CharacterType;
+import com.multiavatar.Theme;
+import java.util.Random;
 
 public class AdvancedExample {
     public static void main(String[] args) {
@@ -82,8 +85,14 @@ public class AdvancedExample {
         String svgWithoutBackground = Multiavatar.generate("User Name", true);
 
         // Generate predefined avatar with specific character and theme
-        // Character: GIRL, Theme: A
-        String svgPredefined = Multiavatar.generate(Multiavatar.CharacterType.GIRL, Multiavatar.CharacterTheme.A);
+        String svgPredefined = Multiavatar.generate(CharacterType.GIRL, Theme.A);
+
+        // Generate random avatar
+        Random rnd = new Random();
+        String randomAvatar = Multiavatar.generate(rnd);
+
+        // Generate random avatar without background
+        String randomNoBackground = Multiavatar.generate(rnd, true);
 
         // Different inputs produce different avatars
         String avatar1 = Multiavatar.generate("Alice");
@@ -100,35 +109,62 @@ public class AdvancedExample {
 
 ## API Reference
 
-### `Multiavatar.generate(String string)`
+### `Multiavatar.generate(String id)`
 
-Generates an avatar SVG from the given string.
+Generates an avatar SVG from the given identifier (deterministic).
 
 **Parameters:**
-- `string` - The input string to generate the avatar from (can be any text)
+- `id` - The identifier to generate the avatar from (e.g., username, email)
 
 **Returns:** Complete SVG code as a String
 
-### `Multiavatar.generate(String string, boolean sansEnv)`
+### `Multiavatar.generate(String id, boolean sansEnv)`
 
-Generates an avatar SVG with optional background.
+Generates an avatar SVG from identifier with optional background.
 
 **Parameters:**
-- `string` - The input string to generate the avatar from
+- `id` - The identifier to generate the avatar from
 - `sansEnv` - If `true`, returns the avatar without the circular background
 
 **Returns:** Complete SVG code as a String
 
-### `Multiavatar.generate(String string, boolean sansEnv, Multiavatar.Version version)`
+### `Multiavatar.generate(CharacterType character, Theme theme)`
 
-Generates an avatar SVG with forced character/theme.
+Generates a predefined avatar SVG with specific character and theme.
 
 **Parameters:**
-- `string` - The input string (used only if version is null)
-- `sansEnv` - If `true`, omits the background circle
-- `version` - Force specific character/theme (e.g., `new Version("01", 'A')`)
-  - `part`: Character ID from "00" to "15"
-  - `theme`: Theme character 'A', 'B', or 'C'
+- `character` - The character type to use (e.g., `CharacterType.GIRL`, `CharacterType.ROBO`)
+- `theme` - The theme to use (`Theme.A`, `Theme.B`, or `Theme.C`)
+
+**Returns:** Complete SVG code as a String
+
+### `Multiavatar.generate(CharacterType character, Theme theme, boolean sansEnv)`
+
+Generates a predefined avatar SVG with optional background.
+
+**Parameters:**
+- `character` - The character type to use
+- `theme` - The theme to use
+- `sansEnv` - If `true`, returns the avatar without the circular background
+
+**Returns:** Complete SVG code as a String
+
+### `Multiavatar.generate(Random rnd)`
+
+Generates a random avatar SVG using the provided Random instance.
+
+**Parameters:**
+- `rnd` - The Random instance to use for generating random parts
+
+**Returns:** Complete SVG code as a String
+
+### `Multiavatar.generate(Random rnd, boolean sansEnv)`
+
+Generates a random avatar SVG with optional background.
+
+**Parameters:**
+- `rnd` - The Random instance to use for generating random parts
+- `sansEnv` - If `true`, returns the avatar without the circular background
 
 **Returns:** Complete SVG code as a String
 
@@ -150,7 +186,7 @@ The 16 base characters:
 - 12: Blond
 - 13: Ateam
 - 14: Rasta
-- 15: Meta
+- 15: Street
 
 Each character has 3 color themes: A, B, and C.
 

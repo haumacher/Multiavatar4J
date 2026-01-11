@@ -3,7 +3,7 @@ package com.multiavatar;
 import com.multiavatar.SvgData.Template;
 
 /**
- * Value class holding an avatar character and theme together
+ * Value class holding an avatar {@link CharacterType} and {@link Theme} together
  */
 public class Coordinate {
     public static Coordinate coordinate(CharacterType character, Theme theme) {
@@ -19,7 +19,10 @@ public class Coordinate {
     }
     
 	/**
-	 * Produces the final SVG string for a part with colors applied from the theme
+	 * Produces the final SVG string for a part with colors applied from the {@link Theme}
+	 *
+	 * @param result The {@link StringBuilder} to append the SVG content to
+	 * @param part The {@link AvatarPart} to render
 	 */
 	public void renderPart(StringBuilder result, AvatarPart part) {
 	    if (character == null) {

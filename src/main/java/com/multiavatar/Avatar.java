@@ -30,7 +30,14 @@ public class Avatar {
             default: return null;
         }
     }
-    
+
+	/**
+	 * Creates a pure avatar where all parts use the same character and theme.
+	 *
+	 * @param character The {@link CharacterType} to use for all parts
+	 * @param theme The {@link Theme} to use for all parts
+	 * @return A new {@link Avatar} with all parts using the same character and theme
+	 */
 	public static Avatar pure(CharacterType character, Theme theme) {
 		Avatar avatar = new Avatar();
 		Coordinate coordinate = Coordinate.coordinate(character, theme);
@@ -43,6 +50,12 @@ public class Avatar {
 		return avatar;
 	}
 
+	/**
+	 * Creates an avatar from an identifier string using SHA-256 hashing.
+	 *
+	 * @param id The identifier to generate the avatar from (e.g., username, email)
+	 * @return A new {@link Avatar} generated deterministically from the id
+	 */
 	public static Avatar fromId(String id) {
 		// Get SHA-256 hash
         String hash = Avatar.sha256(id);
@@ -78,7 +91,7 @@ public class Avatar {
     
 	private static Avatar fromHash(String hashString) {
 		Avatar avatar = new Avatar();
-		// Get parts (range 0-47) and convert to PartWithTheme (0-15 + theme)
+		// Get parts (range 0-47) and convert to {@link Coordinate} (0-15 + theme)
         avatar.env = Avatar.fromPartNumber(getPartNumber(hashString.substring(0, 2)));
         avatar.clo = Avatar.fromPartNumber(getPartNumber(hashString.substring(2, 4)));
         avatar.head = Avatar.fromPartNumber(getPartNumber(hashString.substring(4, 6)));
@@ -89,10 +102,10 @@ public class Avatar {
 	}
 
 	/**
-	 * Creates a random avatar using the provided Random instance.
+	 * Creates a random avatar using the provided {@link Random} instance.
 	 *
-	 * @param rnd The Random instance to use for generating random parts
-	 * @return A new Avatar with randomly selected parts
+	 * @param rnd The {@link Random} instance to use for generating random parts
+	 * @return A new {@link Avatar} with randomly selected parts
 	 */
 	public static Avatar fromRandom(Random rnd) {
 		Avatar avatar = new Avatar();
@@ -107,7 +120,7 @@ public class Avatar {
 	}
 
     /**
-	 * Creates a PartWithTheme from a part number (0-47)
+	 * Creates a {@link Coordinate} from a part number (0-47)
 	 */
 	private static Coordinate fromPartNumber(int nr) {
 	    Theme theme;

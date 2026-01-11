@@ -204,7 +204,7 @@ class ThemeData {
                 new String[]{"#c7d4e2", "#435363", "#435363", "#141720", "#141720", "#e7ecf2", "#e7ecf2"},
                 new String[]{"#f5d4a6"},
                 new String[]{"#000", "#cf9f76"},
-                new String[]{"#000", "#000", "#000", "#000", "#000", "#000", "#fff", "#fff", "#fff", "#fff", "#000", "#000"},
+                new String[]{"#000", "#000", "#000", "#000", "#000", "#000", "#000", "#000", "#fff", "#fff", "#fff", "#fff"},
                 new String[]{"none", "#fdff00"}
             ),
             new Theme(
@@ -324,7 +324,7 @@ class ThemeData {
                 new String[]{"#033c58", "#fff", "#fff"},
                 new String[]{"#dbc97f"},
                 new String[]{"#000"},
-                new String[]{"none", "#fff", "#000"},
+                new String[]{"none", "#000", "#fff"},
                 new String[]{"#FFEB3B", "#FFEB3B", "none", "#FFEB3B"}
             ),
             new Theme(
@@ -332,7 +332,7 @@ class ThemeData {
                 new String[]{"#b40000", "#fff", "#fff"},
                 new String[]{"#E2AF6B"},
                 new String[]{"#000"},
-                new String[]{"none", "#fff", "#000"},
+                new String[]{"none", "#000", "#fff"},
                 new String[]{"#ec0000", "#ec0000", "none", "none"}
             )
         ));

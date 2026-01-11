@@ -1,5 +1,7 @@
 package com.multiavatar;
 
+import com.multiavatar.SvgData.Template;
+
 public class DebugTest {
     public static void main(String[] args) {
         System.out.println("Testing Multiavatar...");
@@ -9,8 +11,8 @@ public class DebugTest {
         System.out.println("SVG content:\n" + svg);
 
         // Test SVG data
-        String svgPart = SvgData.getSvgPart(Multiavatar.AvatarCharacter.ROBO, Multiavatar.AvatarPart.ENV);
-        System.out.println("\nSVG Part ROBO/ENV: " + (svgPart != null ? svgPart.substring(0, Math.min(100, svgPart.length())) : "NULL"));
+        Template svgPart = SvgData.getSvgTemplate(Multiavatar.AvatarCharacter.ROBO, Multiavatar.AvatarPart.ENV);
+        System.out.println("\nSVG Part ROBO/ENV: " + (svgPart != null ? svgPart.toSource().substring(0, Math.min(100, svgPart.toSource().length())) : "NULL"));
 
         // Test theme data
         ThemeData.CharacterThemes themes = ThemeData.getCharacterThemes(Multiavatar.AvatarCharacter.ROBO);

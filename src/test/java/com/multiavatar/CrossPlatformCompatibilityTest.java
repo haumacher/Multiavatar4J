@@ -83,14 +83,18 @@ public class CrossPlatformCompatibilityTest {
                     String failureMsg = String.format(
                         "Case %d FAILED: \"%s\"%s sansEnv=%b\n" +
                         "  Expected length: %d, Got: %d (stripped: %d)\n" +
-                        "  Output differs from JavaScript implementation",
+                        "  Output differs from JavaScript implementation\n" + 
+                        "  Expected: %s\n" + 
+                        "  Actual:   %s\n",
                         vector.id,
                         vector.input.length() > 30 ? vector.input.substring(0, 30) + "..." : vector.input,
                         versionStr,
                         vector.sansEnv,
                         vector.output.length(),
                         javaOutput.length(),
-                        javaOutputStripped.length()
+                        javaOutputStripped.length(),
+                        vector.output,
+                        javaOutputStripped
                     );
                     failures.add(failureMsg);
                     System.err.println(failureMsg);

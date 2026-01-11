@@ -1,9 +1,9 @@
 package com.multiavatar;
 
 import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import com.multiavatar.SvgData.Template;
 
 /**
  * Multiavatar - Multicultural Avatar Generator
@@ -25,8 +25,6 @@ public class Multiavatar {
 	private static final String SVG_START = "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 231 231\">";
     private static final String SVG_END = "</svg>";
     private static final String STROKE = "stroke-linecap:round;stroke-linejoin:round;stroke-width:";
-
-    private static final Pattern PLACEHOLDER_PATTERN = Pattern.compile("#([^;]*);");
 
     /**
      * Avatar part names in the order they should be rendered
@@ -196,6 +194,10 @@ public class Multiavatar {
         result.append("<metadata xmlns:dc=\"http://purl.org/dc/elements/1.1/\"><dc:creator>Multiavatar</dc:creator><dc:source>https://multiavatar.com</dc:source></metadata>");
 
         for (AvatarPart part : AvatarPart.values()) {
+            if (part == AvatarPart.ENV && sansEnv) {
+                continue; // Skip environment if sansEnv is true
+            }
+
             String partValue = parts.getValue(part);
             String partId = partValue.substring(0, 2);
             char theme = partValue.charAt(2);
@@ -206,10 +208,6 @@ public class Multiavatar {
             }
 
             String svgPart = getFinalSvg(part, partId, theme);
-
-            if (part == AvatarPart.ENV && sansEnv) {
-                continue; // Skip environment if sansEnv is true
-            }
 
             result.append(svgPart);
         }
@@ -272,30 +270,9 @@ public class Multiavatar {
         String[] colors = getColorsForPart(themeData, part);
 
         // Get SVG template
-        String svgTemplate = SvgData.getSvgPart(character, part);
-        if (svgTemplate == null || svgTemplate.isEmpty()) {
-            return "";
-        }
-
-        // Replace color placeholders
-        // Use JavaScript-compatible replacement: String.replace() in a loop
-        // This has a "bug" where replacing A→B then B→C will re-replace the new B
-        Matcher matcher = PLACEHOLDER_PATTERN.matcher(svgTemplate);
-
-        // First, collect all matches
-        java.util.List<String> matches = new java.util.ArrayList<>();
-        while (matcher.find()) {
-            matches.add(matcher.group(0));
-        }
-
-        // Then replace them one by one (JavaScript behavior)
-        String result = svgTemplate;
-        for (int i = 0; i < matches.size() && i < colors.length; i++) {
-            // JavaScript uses String.replace() which replaces FIRST occurrence
-            result = result.replaceFirst(java.util.regex.Pattern.quote(matches.get(i)), colors[i] + ";");
-        }
-
-        return result;
+        Template svgTemplate = SvgData.getSvgTemplate(character, part);
+        
+        return svgTemplate.expand(colors);
     }
 
     /**

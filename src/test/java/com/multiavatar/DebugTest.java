@@ -11,14 +11,14 @@ public class DebugTest {
         System.out.println("SVG content:\n" + svg);
 
         // Test SVG data
-        Template svgPart = SvgData.getSvgTemplate(Multiavatar.AvatarCharacter.ROBO, Multiavatar.AvatarPart.ENV);
+        Template svgPart = SvgData.getSvgTemplate(Multiavatar.CharacterType.ROBO, Multiavatar.AvatarPart.ENV);
         System.out.println("\nSVG Part ROBO/ENV: " + (svgPart != null ? svgPart.toSource().substring(0, Math.min(100, svgPart.toSource().length())) : "NULL"));
 
         // Test theme data
-        ThemeData.CharacterThemes themes = ThemeData.getCharacterThemes(Multiavatar.AvatarCharacter.ROBO);
+        ThemeData.CharacterThemes themes = ThemeData.getCharacterThemes(Multiavatar.CharacterType.ROBO);
         System.out.println("\nThemes for ROBO: " + (themes != null ? "Found" : "NULL"));
         if (themes != null) {
-            ThemeData.Theme themeA = themes.getTheme(Multiavatar.Theme.A);
+            ThemeData.Theme themeA = themes.getTheme(Multiavatar.CharacterTheme.A);
             System.out.println("Theme A env colors: " + java.util.Arrays.toString(themeA.env));
         }
     }

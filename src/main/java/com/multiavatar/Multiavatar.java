@@ -29,14 +29,14 @@ public class Multiavatar {
     /**
      * Theme variants for each character
      */
-    enum Theme {
+    enum CharacterTheme {
         A('A'),
         B('B'),
         C('C');
 
         private final char code;
 
-        Theme(char code) {
+        CharacterTheme(char code) {
             this.code = code;
         }
 
@@ -47,8 +47,8 @@ public class Multiavatar {
         /**
          * Get theme by character code ('A', 'B', or 'C')
          */
-        public static Theme fromCode(char code) {
-            for (Theme theme : values()) {
+        public static CharacterTheme fromCode(char code) {
+            for (CharacterTheme theme : values()) {
                 if (theme.code == code) {
                     return theme;
                 }
@@ -60,11 +60,11 @@ public class Multiavatar {
     /**
      * Value class holding an avatar character and theme together
      */
-    static class PartWithTheme {
-        final AvatarCharacter character;
-        final Theme theme;
+    static class Coordinate {
+        final CharacterType character;
+        final CharacterTheme theme;
 
-        PartWithTheme(AvatarCharacter character, Theme theme) {
+        Coordinate(CharacterType character, CharacterTheme theme) {
             this.character = character;
             this.theme = theme;
         }
@@ -72,21 +72,21 @@ public class Multiavatar {
         /**
          * Creates a PartWithTheme from a part number (0-47)
          */
-        static PartWithTheme fromPartNumber(int nr) {
-            Theme theme;
+        static Coordinate fromPartNumber(int nr) {
+            CharacterTheme theme;
 
             if (nr > 31) {
                 nr = nr - 32;
-                theme = Theme.C;
+                theme = CharacterTheme.C;
             } else if (nr > 15) {
                 nr = nr - 16;
-                theme = Theme.B;
+                theme = CharacterTheme.B;
             } else {
-                theme = Theme.A;
+                theme = CharacterTheme.A;
             }
 
-            AvatarCharacter character = AvatarCharacter.fromIndex(nr);
-            return new PartWithTheme(character, theme);
+            CharacterType character = CharacterType.fromIndex(nr);
+            return new Coordinate(character, theme);
         }
     }
 
@@ -127,7 +127,7 @@ public class Multiavatar {
     /**
      * Avatar character types (16 base characters, 00-15)
      */
-    enum AvatarCharacter {
+    enum CharacterType {
         ROBO("00", "Robo"),
         GIRL("01", "Girl"),
         BLONDE("02", "Blonde"),
@@ -148,7 +148,7 @@ public class Multiavatar {
         private final String id;
         private final String displayName;
 
-        AvatarCharacter(String id, String displayName) {
+        CharacterType(String id, String displayName) {
             this.id = id;
             this.displayName = displayName;
         }
@@ -164,8 +164,8 @@ public class Multiavatar {
         /**
          * Get character by ID string (e.g., "00", "15")
          */
-        public static AvatarCharacter fromId(String id) {
-            for (AvatarCharacter character : values()) {
+        public static CharacterType fromId(String id) {
+            for (CharacterType character : values()) {
                 if (character.id.equals(id)) {
                     return character;
                 }
@@ -176,7 +176,7 @@ public class Multiavatar {
         /**
          * Get character by numeric index (0-15)
          */
-        public static AvatarCharacter fromIndex(int index) {
+        public static CharacterType fromIndex(int index) {
             if (index < 0 || index >= values().length) {
                 return null;
             }
@@ -214,7 +214,7 @@ public class Multiavatar {
      * @param theme     Force a specific theme (A, B, or C)
      * @return The complete SVG code as a string
      */
-    public static String generate(String string, boolean sansEnv, AvatarCharacter character, Theme theme) {
+    public static String generate(String string, boolean sansEnv, CharacterType character, CharacterTheme theme) {
         if (string == null) {
             string = "";
         }
@@ -234,15 +234,15 @@ public class Multiavatar {
         String hashString = hashDigitsOnly.substring(0, Math.min(12, hashDigitsOnly.length()));
 
         // Convert hash string to parts (6 parts, 2 digits each)
-        Parts parts = new Parts();
+        Avatar parts = new Avatar();
 
         // Get parts (range 0-47) and convert to PartWithTheme (0-15 + theme)
-        parts.env = PartWithTheme.fromPartNumber(getPartNumber(hashString.substring(0, 2)));
-        parts.clo = PartWithTheme.fromPartNumber(getPartNumber(hashString.substring(2, 4)));
-        parts.head = PartWithTheme.fromPartNumber(getPartNumber(hashString.substring(4, 6)));
-        parts.mouth = PartWithTheme.fromPartNumber(getPartNumber(hashString.substring(6, 8)));
-        parts.eyes = PartWithTheme.fromPartNumber(getPartNumber(hashString.substring(8, 10)));
-        parts.top = PartWithTheme.fromPartNumber(getPartNumber(hashString.substring(10, 12)));
+        parts.env = Coordinate.fromPartNumber(getPartNumber(hashString.substring(0, 2)));
+        parts.clo = Coordinate.fromPartNumber(getPartNumber(hashString.substring(2, 4)));
+        parts.head = Coordinate.fromPartNumber(getPartNumber(hashString.substring(4, 6)));
+        parts.mouth = Coordinate.fromPartNumber(getPartNumber(hashString.substring(6, 8)));
+        parts.eyes = Coordinate.fromPartNumber(getPartNumber(hashString.substring(8, 10)));
+        parts.top = Coordinate.fromPartNumber(getPartNumber(hashString.substring(10, 12)));
 
         // Get the SVG code for each part
         StringBuilder result = new StringBuilder(SVG_START);
@@ -255,13 +255,13 @@ public class Multiavatar {
                 continue; // Skip environment if sansEnv is true
             }
 
-            PartWithTheme partWithTheme = parts.getValue(part);
-            AvatarCharacter partCharacter = partWithTheme.character;
-            Theme partTheme = partWithTheme.theme;
+            Coordinate partWithTheme = parts.getValue(part);
+            CharacterType partCharacter = partWithTheme.character;
+            CharacterTheme partTheme = partWithTheme.theme;
 
             // Use forced character/theme if provided, otherwise use generated ones
-            AvatarCharacter finalCharacter = (character != null) ? character : partCharacter;
-            Theme finalTheme = (theme != null) ? theme : partTheme;
+            CharacterType finalCharacter = (character != null) ? character : partCharacter;
+            CharacterTheme finalTheme = (theme != null) ? theme : partTheme;
 
             String svgPart = getFinalSvg(part, finalCharacter, finalTheme);
 
@@ -284,7 +284,7 @@ public class Multiavatar {
     /**
      * Gets the final SVG string for a part with colors applied from the theme
      */
-    private static String getFinalSvg(AvatarPart part, AvatarCharacter character, Theme theme) {
+    private static String getFinalSvg(AvatarPart part, CharacterType character, CharacterTheme theme) {
         if (character == null) {
             return "";
         }
@@ -343,17 +343,17 @@ public class Multiavatar {
     }
 
     /**
-     * Helper class to store part values
+     * The avatar configuration
      */
-    private static class Parts {
-        PartWithTheme env;
-        PartWithTheme clo;
-        PartWithTheme head;
-        PartWithTheme mouth;
-        PartWithTheme eyes;
-        PartWithTheme top;
+    private static class Avatar {
+        Coordinate env;
+        Coordinate clo;
+        Coordinate head;
+        Coordinate mouth;
+        Coordinate eyes;
+        Coordinate top;
 
-        PartWithTheme getValue(AvatarPart part) {
+        Coordinate getValue(AvatarPart part) {
             switch (part) {
                 case ENV: return env;
                 case CLO: return clo;

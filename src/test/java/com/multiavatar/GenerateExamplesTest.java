@@ -62,8 +62,8 @@ public class GenerateExamplesTest {
         // Generate examples with forced versions (different themes for same character)
         String testInput = "Version Test";
         for (int characterIndex = 0; characterIndex < 3; characterIndex++) {
-            Multiavatar.AvatarCharacter character = Multiavatar.AvatarCharacter.fromIndex(characterIndex);
-            for (Multiavatar.Theme theme : Multiavatar.Theme.values()) {
+            Multiavatar.CharacterType character = Multiavatar.CharacterType.fromIndex(characterIndex);
+            for (Multiavatar.CharacterTheme theme : Multiavatar.CharacterTheme.values()) {
                 String svg = Multiavatar.generate(testInput, false, character, theme);
                 String filename = "version_char" + character.getId() + "_theme" + theme.getCode() + ".svg";
                 writeToFile(new File(examplesDir, filename), svg);

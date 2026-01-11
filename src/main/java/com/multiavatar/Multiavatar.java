@@ -1,0 +1,262 @@
+package com.multiavatar;
+
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+/**
+ * Multiavatar - Multicultural Avatar Generator
+ *
+ * Generates unique SVG avatars from text strings.
+ * Can generate 12,230,590,464 unique avatars (48^6).
+ *
+ * Usage:
+ * <pre>
+ * String svgCode = Multiavatar.generate("Binx Bond");
+ * String svgWithoutBackground = Multiavatar.generate("Binx Bond", true);
+ * </pre>
+ *
+ * @author Gie Katon
+ * @version 1.0.7
+ */
+public class Multiavatar {
+
+    private static final String SVG_START = "<svg viewBox='0 0 231 231' fill='none' xmlns='http://www.w3.org/2000/svg'>";
+    private static final String SVG_END = "</svg>";
+    private static final String STROKE = "stroke-linecap:round;stroke-linejoin:round;stroke-width:";
+
+    /**
+     * Generates an avatar SVG from the given string.
+     *
+     * @param string The input string to generate the avatar from
+     * @return The complete SVG code as a string
+     */
+    public static String generate(String string) {
+        return generate(string, false, null);
+    }
+
+    /**
+     * Generates an avatar SVG from the given string.
+     *
+     * @param string  The input string to generate the avatar from
+     * @param sansEnv If true, returns the avatar without the circular background
+     * @return The complete SVG code as a string
+     */
+    public static String generate(String string, boolean sansEnv) {
+        return generate(string, sansEnv, null);
+    }
+
+    /**
+     * Generates an avatar SVG from the given string.
+     *
+     * @param string  The input string to generate the avatar from
+     * @param sansEnv If true, returns the avatar without the circular background
+     * @param version Force a specific character version (e.g., {part: "01", theme: "A"})
+     * @return The complete SVG code as a string
+     */
+    public static String generate(String string, boolean sansEnv, Version version) {
+        if (string == null) {
+            string = "";
+        }
+
+        // Get SHA-256 hash
+        String hash = sha256(string);
+
+        // Extract first 12 characters of hash
+        String hashString = hash.substring(0, 12);
+
+        // Convert hash string to parts (6 parts, 2 digits each)
+        Parts parts = new Parts();
+
+        // Get parts (range 0-47)
+        parts.env = getPartNumber(hashString.substring(0, 2));
+        parts.clo = getPartNumber(hashString.substring(2, 4));
+        parts.head = getPartNumber(hashString.substring(4, 6));
+        parts.mouth = getPartNumber(hashString.substring(6, 8));
+        parts.eyes = getPartNumber(hashString.substring(8, 10));
+        parts.top = getPartNumber(hashString.substring(10, 12));
+
+        // Get parts (range 0-15) + define themes
+        parts.envStr = getPartWithTheme(parts.env);
+        parts.cloStr = getPartWithTheme(parts.clo);
+        parts.headStr = getPartWithTheme(parts.head);
+        parts.mouthStr = getPartWithTheme(parts.mouth);
+        parts.eyesStr = getPartWithTheme(parts.eyes);
+        parts.topStr = getPartWithTheme(parts.top);
+
+        // Get the SVG code for each part
+        StringBuilder result = new StringBuilder(SVG_START);
+
+        for (String partName : new String[]{"env", "clo", "head", "mouth", "eyes", "top"}) {
+            String partValue = parts.getValue(partName);
+            String partId = partValue.substring(0, 2);
+            char theme = partValue.charAt(2);
+
+            if (version != null) {
+                partId = version.part;
+                theme = version.theme;
+            }
+
+            String svgPart = getFinalSvg(partName, partId, theme);
+
+            if (partName.equals("env") && sansEnv) {
+                continue; // Skip environment if sansEnv is true
+            }
+
+            result.append(svgPart);
+        }
+
+        result.append(SVG_END);
+
+        return result.toString();
+    }
+
+    /**
+     * Converts a 2-digit hex string (0-99) to a part number (0-47)
+     */
+    private static int getPartNumber(String hexPair) {
+        int value = Integer.parseInt(hexPair, 16);
+        return Math.round((47f / 100f) * value);
+    }
+
+    /**
+     * Converts a part number (0-47) to a part ID with theme (e.g., "01A", "05B", "12C")
+     */
+    private static String getPartWithTheme(int nr) {
+        String partId;
+        char theme;
+
+        if (nr > 31) {
+            nr = nr - 32;
+            theme = 'C';
+        } else if (nr > 15) {
+            nr = nr - 16;
+            theme = 'B';
+        } else {
+            theme = 'A';
+        }
+
+        partId = String.format("%02d", nr);
+        return partId + theme;
+    }
+
+    /**
+     * Gets the final SVG string for a part with colors applied from the theme
+     */
+    private static String getFinalSvg(String partName, String partId, char theme) {
+        // Get theme colors
+        ThemeData.CharacterThemes characterThemes = ThemeData.getCharacterThemes(partId);
+        if (characterThemes == null) {
+            return "";
+        }
+
+        ThemeData.Theme themeData = characterThemes.getTheme(theme);
+        if (themeData == null) {
+            return "";
+        }
+
+        String[] colors = getColorsForPart(themeData, partName);
+
+        // Get SVG template
+        String svgTemplate = SvgData.getSvgPart(partId, partName);
+        if (svgTemplate == null || svgTemplate.isEmpty()) {
+            return "";
+        }
+
+        // Replace color placeholders
+        String result = svgTemplate;
+        Pattern pattern = Pattern.compile("#(.*?);");
+        Matcher matcher = pattern.matcher(svgTemplate);
+
+        int colorIndex = 0;
+        StringBuffer sb = new StringBuffer();
+        while (matcher.find() && colorIndex < colors.length) {
+            String replacement = colors[colorIndex] + ";";
+            matcher.appendReplacement(sb, Matcher.quoteReplacement(replacement));
+            colorIndex++;
+        }
+        matcher.appendTail(sb);
+        result = sb.toString();
+
+        return result;
+    }
+
+    /**
+     * Gets the color array for a specific part from theme data
+     */
+    private static String[] getColorsForPart(ThemeData.Theme theme, String partName) {
+        switch (partName) {
+            case "env": return theme.env;
+            case "clo": return theme.clo;
+            case "head": return theme.head;
+            case "mouth": return theme.mouth;
+            case "eyes": return theme.eyes;
+            case "top": return theme.top;
+            default: return new String[0];
+        }
+    }
+
+    /**
+     * Calculates SHA-256 hash of a string
+     */
+    private static String sha256(String input) {
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] hash = digest.digest(input.getBytes("UTF-8"));
+            StringBuilder hexString = new StringBuilder();
+            for (byte b : hash) {
+                String hex = Integer.toHexString(0xff & b);
+                if (hex.length() == 1) hexString.append('0');
+                hexString.append(hex);
+            }
+            return hexString.toString();
+        } catch (Exception e) {
+            throw new RuntimeException("Error calculating SHA-256", e);
+        }
+    }
+
+    /**
+     * Helper class to store part values
+     */
+    private static class Parts {
+        int env;
+        int clo;
+        int head;
+        int mouth;
+        int eyes;
+        int top;
+
+        String envStr;
+        String cloStr;
+        String headStr;
+        String mouthStr;
+        String eyesStr;
+        String topStr;
+
+        String getValue(String partName) {
+            switch (partName) {
+                case "env": return envStr != null ? envStr : "";
+                case "clo": return cloStr != null ? cloStr : "";
+                case "head": return headStr != null ? headStr : "";
+                case "mouth": return mouthStr != null ? mouthStr : "";
+                case "eyes": return eyesStr != null ? eyesStr : "";
+                case "top": return topStr != null ? topStr : "";
+                default: return "";
+            }
+        }
+    }
+
+    /**
+     * Version specification for forcing a specific character/theme
+     */
+    public static class Version {
+        public String part;  // e.g., "01"
+        public char theme;   // 'A', 'B', or 'C'
+
+        public Version(String part, char theme) {
+            this.part = part;
+            this.theme = theme;
+        }
+    }
+}

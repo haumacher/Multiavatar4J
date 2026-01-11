@@ -48,6 +48,18 @@ public class Multiavatar {
         public String getName() {
             return name;
         }
+
+        /**
+         * Parse AvatarPart from string name
+         */
+        public static AvatarPart fromString(String name) {
+            for (AvatarPart part : values()) {
+                if (part.name.equals(name)) {
+                    return part;
+                }
+            }
+            return null;
+        }
     }
 
     /**
@@ -124,8 +136,7 @@ public class Multiavatar {
         result.append("<metadata xmlns:dc=\"http://purl.org/dc/elements/1.1/\"><dc:creator>Multiavatar</dc:creator><dc:source>https://multiavatar.com</dc:source></metadata>");
 
         for (AvatarPart part : AvatarPart.values()) {
-            String partName = part.getName();
-            String partValue = parts.getValue(partName);
+            String partValue = parts.getValue(part);
             String partId = partValue.substring(0, 2);
             char theme = partValue.charAt(2);
 
@@ -134,7 +145,7 @@ public class Multiavatar {
                 theme = version.theme;
             }
 
-            String svgPart = getFinalSvg(partName, partId, theme);
+            String svgPart = getFinalSvg(part, partId, theme);
 
             if (part == AvatarPart.ENV && sansEnv) {
                 continue; // Skip environment if sansEnv is true
@@ -180,7 +191,7 @@ public class Multiavatar {
     /**
      * Gets the final SVG string for a part with colors applied from the theme
      */
-    private static String getFinalSvg(String partName, String partId, char theme) {
+    private static String getFinalSvg(AvatarPart part, String partId, char theme) {
         // Get theme colors
         ThemeData.CharacterThemes characterThemes = ThemeData.getCharacterThemes(partId);
         if (characterThemes == null) {
@@ -192,10 +203,10 @@ public class Multiavatar {
             return "";
         }
 
-        String[] colors = getColorsForPart(themeData, partName);
+        String[] colors = getColorsForPart(themeData, part);
 
         // Get SVG template
-        String svgTemplate = SvgData.getSvgPart(partId, partName);
+        String svgTemplate = SvgData.getSvgPart(partId, part.getName());
         if (svgTemplate == null || svgTemplate.isEmpty()) {
             return "";
         }
@@ -224,14 +235,14 @@ public class Multiavatar {
     /**
      * Gets the color array for a specific part from theme data
      */
-    private static String[] getColorsForPart(ThemeData.Theme theme, String partName) {
-        switch (partName) {
-            case "env": return theme.env;
-            case "clo": return theme.clo;
-            case "head": return theme.head;
-            case "mouth": return theme.mouth;
-            case "eyes": return theme.eyes;
-            case "top": return theme.top;
+    private static String[] getColorsForPart(ThemeData.Theme theme, AvatarPart part) {
+        switch (part) {
+            case ENV: return theme.env;
+            case CLO: return theme.clo;
+            case HEAD: return theme.head;
+            case MOUTH: return theme.mouth;
+            case EYES: return theme.eyes;
+            case TOP: return theme.top;
             default: return new String[0];
         }
     }
@@ -273,14 +284,14 @@ public class Multiavatar {
         String eyesStr;
         String topStr;
 
-        String getValue(String partName) {
-            switch (partName) {
-                case "env": return envStr != null ? envStr : "";
-                case "clo": return cloStr != null ? cloStr : "";
-                case "head": return headStr != null ? headStr : "";
-                case "mouth": return mouthStr != null ? mouthStr : "";
-                case "eyes": return eyesStr != null ? eyesStr : "";
-                case "top": return topStr != null ? topStr : "";
+        String getValue(AvatarPart part) {
+            switch (part) {
+                case ENV: return envStr != null ? envStr : "";
+                case CLO: return cloStr != null ? cloStr : "";
+                case HEAD: return headStr != null ? headStr : "";
+                case MOUTH: return mouthStr != null ? mouthStr : "";
+                case EYES: return eyesStr != null ? eyesStr : "";
+                case TOP: return topStr != null ? topStr : "";
                 default: return "";
             }
         }

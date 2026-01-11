@@ -9,8 +9,8 @@ public class DebugTest {
         System.out.println("SVG content:\n" + svg);
 
         // Test SVG data
-        String svgPart = SvgData.getSvgPart("00", Multiavatar.AvatarPart.ENV);
-        System.out.println("\nSVG Part 00/ENV: " + (svgPart != null ? svgPart.substring(0, Math.min(100, svgPart.length())) : "NULL"));
+        String svgPart = SvgData.getSvgPart(Multiavatar.AvatarCharacter.ROBO, Multiavatar.AvatarPart.ENV);
+        System.out.println("\nSVG Part ROBO/ENV: " + (svgPart != null ? svgPart.substring(0, Math.min(100, svgPart.length())) : "NULL"));
 
         // Test theme data
         ThemeData.CharacterThemes themes = ThemeData.getCharacterThemes("00");

@@ -63,6 +63,66 @@ public class Multiavatar {
     }
 
     /**
+     * Avatar character types (16 base characters, 00-15)
+     */
+    enum AvatarCharacter {
+        ROBO("00", "Robo"),
+        GIRL("01", "Girl"),
+        BLONDE("02", "Blonde"),
+        GUY("03", "Guy"),
+        COUNTRY("04", "Country"),
+        GEEKNOT("05", "Geeknot"),
+        ASIAN("06", "Asian"),
+        PUNK("07", "Punk"),
+        AFROHAIR("08", "Afrohair"),
+        NORMIE_FEMALE("09", "Normie Female"),
+        OLDER("10", "Older"),
+        FIREHAIR("11", "Firehair"),
+        BLOND("12", "Blond"),
+        ATEAM("13", "Ateam"),
+        RASTA("14", "Rasta"),
+        STREET("15", "Street");
+
+        private final String id;
+        private final String displayName;
+
+        AvatarCharacter(String id, String displayName) {
+            this.id = id;
+            this.displayName = displayName;
+        }
+
+        public String getId() {
+            return id;
+        }
+
+        public String getDisplayName() {
+            return displayName;
+        }
+
+        /**
+         * Get character by ID string (e.g., "00", "15")
+         */
+        public static AvatarCharacter fromId(String id) {
+            for (AvatarCharacter character : values()) {
+                if (character.id.equals(id)) {
+                    return character;
+                }
+            }
+            return null;
+        }
+
+        /**
+         * Get character by numeric index (0-15)
+         */
+        public static AvatarCharacter fromIndex(int index) {
+            if (index < 0 || index >= values().length) {
+                return null;
+            }
+            return values()[index];
+        }
+    }
+
+    /**
      * Generates an avatar SVG from the given string.
      *
      * @param string The input string to generate the avatar from
@@ -192,6 +252,12 @@ public class Multiavatar {
      * Gets the final SVG string for a part with colors applied from the theme
      */
     private static String getFinalSvg(AvatarPart part, String partId, char theme) {
+        // Convert partId string to AvatarCharacter enum
+        AvatarCharacter character = AvatarCharacter.fromId(partId);
+        if (character == null) {
+            return "";
+        }
+
         // Get theme colors
         ThemeData.CharacterThemes characterThemes = ThemeData.getCharacterThemes(partId);
         if (characterThemes == null) {
@@ -206,7 +272,7 @@ public class Multiavatar {
         String[] colors = getColorsForPart(themeData, part);
 
         // Get SVG template
-        String svgTemplate = SvgData.getSvgPart(partId, part);
+        String svgTemplate = SvgData.getSvgPart(character, part);
         if (svgTemplate == null || svgTemplate.isEmpty()) {
             return "";
         }

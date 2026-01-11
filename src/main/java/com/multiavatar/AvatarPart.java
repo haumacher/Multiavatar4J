@@ -1,38 +1,25 @@
 package com.multiavatar;
 
 /**
- * Avatar part names in the order they should be rendered
+ * Avatar part names in the order they should be rendered.
+ * Each part represents a layer of the avatar SVG.
  */
 public enum AvatarPart {
-    ENV("env"),
-    HEAD("head"),
-    CLO("clo"),
-    TOP("top"),
-    EYES("eyes"),
-    MOUTH("mouth");
+    /** Environment - the circular background layer */
+    ENV,
 
-    private final String name;
+    /** Head - the face/head shape layer */
+    HEAD,
 
-    AvatarPart(String name) {
-        this.name = name;
-    }
+    /** Clothes - the clothing/body layer */
+    CLO,
 
-    public String getName() {
-        return name;
-    }
+    /** Top - the hair/headwear layer */
+    TOP,
 
-    /**
-	 * Gets the color array for a specific part from theme data
-	 */
-	public String[] getColors(ThemeData.Colors theme) {
-	    switch (this) {
-	        case ENV: return theme.env;
-	        case CLO: return theme.clo;
-	        case HEAD: return theme.head;
-	        case MOUTH: return theme.mouth;
-	        case EYES: return theme.eyes;
-	        case TOP: return theme.top;
-	        default: return new String[0];
-	    }
-	}
+    /** Eyes - the eyes layer */
+    EYES,
+
+    /** Mouth - the mouth/expression layer */
+    MOUTH;
 }

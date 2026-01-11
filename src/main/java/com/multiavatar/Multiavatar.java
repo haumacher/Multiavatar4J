@@ -97,7 +97,7 @@ public class Multiavatar {
         StringBuilder result = new StringBuilder(SVG_START);
 
         // Add generator attribution (fulfills license requirement)
-        result.append("<metadata><dc:creator>Multiavatar</dc:creator><dc:source>https://multiavatar.com</dc:source></metadata>");
+        result.append("<metadata xmlns:dc=\"http://purl.org/dc/elements/1.1/\"><dc:creator>Multiavatar</dc:creator><dc:source>https://multiavatar.com</dc:source></metadata>");
 
         for (String partName : new String[]{"env", "head", "clo", "top", "eyes", "mouth"}) {
             String partValue = parts.getValue(partName);

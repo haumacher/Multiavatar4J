@@ -70,7 +70,7 @@ public class CrossPlatformCompatibilityTest {
 
                 // Strip attribution metadata from Java output for comparison
                 // (Java adds metadata for license compliance)
-                String javaOutputStripped = javaOutput.replace("<metadata><dc:creator>Multiavatar</dc:creator><dc:source>https://multiavatar.com</dc:source></metadata>", "");
+                String javaOutputStripped = javaOutput.replace("<metadata xmlns:dc=\"http://purl.org/dc/elements/1.1/\"><dc:creator>Multiavatar</dc:creator><dc:source>https://multiavatar.com</dc:source></metadata>", "");
 
                 // Compare with JavaScript output
                 if (javaOutputStripped.equals(vector.output)) {

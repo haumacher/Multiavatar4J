@@ -10,10 +10,9 @@ import java.nio.file.Paths;
 public class CompareJsJavaOutput {
     public static void main(String[] args) throws Exception {
         String input = "Test";
-        Multiavatar.Version version = new Multiavatar.Version(Multiavatar.AvatarCharacter.GEEKNOT, Multiavatar.Theme.A);
 
         // Generate using Java
-        String javaOutput = Multiavatar.generate(input, false, version);
+        String javaOutput = Multiavatar.generate(input, false, Multiavatar.AvatarCharacter.GEEKNOT, Multiavatar.Theme.A);
 
         // Debug: Print which parts are being used
         System.out.println("=== DEBUG: Hash and Parts for: \"" + input + "\" ===");
@@ -33,8 +32,7 @@ public class CompareJsJavaOutput {
         System.out.println("First 12: " + first12);
         System.out.println();
 
-        String versionStr = version != null ? " [" + version.character.getId() + version.theme + "]" : "";
-        System.out.println("=== Comparing Output for: \"" + input + "\"" + versionStr + " ===\n");
+        System.out.println("=== Comparing Output for: \"" + input + "\" [05A] ===\n");
 
         System.out.println("Java output length: " + javaOutput.length());
         System.out.println("Java output (first 300 chars):");

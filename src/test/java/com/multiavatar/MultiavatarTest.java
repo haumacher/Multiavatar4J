@@ -78,8 +78,7 @@ public class MultiavatarTest {
 
     @Test
     public void testVersion() {
-        Multiavatar.Version version = new Multiavatar.Version(Multiavatar.AvatarCharacter.GIRL, Multiavatar.Theme.A);
-        String svg = Multiavatar.generate("Test", false, version);
+        String svg = Multiavatar.generate("Test", false, Multiavatar.AvatarCharacter.GIRL, Multiavatar.Theme.A);
 
         assertNotNull("Version-forced SVG should not be null", svg);
         assertTrue("SVG should be valid", svg.startsWith("<svg"));
@@ -87,13 +86,9 @@ public class MultiavatarTest {
 
     @Test
     public void testVersionDifferentThemes() {
-        Multiavatar.Version versionA = new Multiavatar.Version(Multiavatar.AvatarCharacter.GIRL, Multiavatar.Theme.A);
-        Multiavatar.Version versionB = new Multiavatar.Version(Multiavatar.AvatarCharacter.GIRL, Multiavatar.Theme.B);
-        Multiavatar.Version versionC = new Multiavatar.Version(Multiavatar.AvatarCharacter.GIRL, Multiavatar.Theme.C);
-
-        String svgA = Multiavatar.generate("Test", false, versionA);
-        String svgB = Multiavatar.generate("Test", false, versionB);
-        String svgC = Multiavatar.generate("Test", false, versionC);
+        String svgA = Multiavatar.generate("Test", false, Multiavatar.AvatarCharacter.GIRL, Multiavatar.Theme.A);
+        String svgB = Multiavatar.generate("Test", false, Multiavatar.AvatarCharacter.GIRL, Multiavatar.Theme.B);
+        String svgC = Multiavatar.generate("Test", false, Multiavatar.AvatarCharacter.GIRL, Multiavatar.Theme.C);
 
         // Different themes should produce different SVGs
         assertNotEquals("Theme A and B should differ", svgA, svgB);

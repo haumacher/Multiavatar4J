@@ -191,7 +191,7 @@ public class Multiavatar {
      * @return The complete SVG code as a string
      */
     public static String generate(String string) {
-        return generate(string, false, null);
+        return generate(string, false, null, null);
     }
 
     /**
@@ -202,18 +202,19 @@ public class Multiavatar {
      * @return The complete SVG code as a string
      */
     public static String generate(String string, boolean sansEnv) {
-        return generate(string, sansEnv, null);
+        return generate(string, sansEnv, null, null);
     }
 
     /**
-     * Generates an avatar SVG from the given string.
+     * Generates an avatar SVG from the given string with forced character and theme.
      *
-     * @param string  The input string to generate the avatar from
-     * @param sansEnv If true, returns the avatar without the circular background
-     * @param version Force a specific character version (e.g., {part: "01", theme: "A"})
+     * @param string    The input string to generate the avatar from
+     * @param sansEnv   If true, returns the avatar without the circular background
+     * @param character Force a specific character (e.g., GIRL, ROBO)
+     * @param theme     Force a specific theme (A, B, or C)
      * @return The complete SVG code as a string
      */
-    public static String generate(String string, boolean sansEnv, Version version) {
+    public static String generate(String string, boolean sansEnv, AvatarCharacter character, Theme theme) {
         if (string == null) {
             string = "";
         }
@@ -255,15 +256,14 @@ public class Multiavatar {
             }
 
             PartWithTheme partWithTheme = parts.getValue(part);
-            AvatarCharacter character = partWithTheme.character;
-            Theme theme = partWithTheme.theme;
+            AvatarCharacter partCharacter = partWithTheme.character;
+            Theme partTheme = partWithTheme.theme;
 
-            if (version != null) {
-                character = version.character;
-                theme = version.theme;
-            }
+            // Use forced character/theme if provided, otherwise use generated ones
+            AvatarCharacter finalCharacter = (character != null) ? character : partCharacter;
+            Theme finalTheme = (theme != null) ? theme : partTheme;
 
-            String svgPart = getFinalSvg(part, character, theme);
+            String svgPart = getFinalSvg(part, finalCharacter, finalTheme);
 
             result.append(svgPart);
         }
@@ -366,16 +366,4 @@ public class Multiavatar {
         }
     }
 
-    /**
-     * Version specification for forcing a specific character/theme
-     */
-    public static class Version {
-        public AvatarCharacter character;
-        public Theme theme;
-
-        public Version(AvatarCharacter character, Theme theme) {
-            this.character = character;
-            this.theme = theme;
-        }
-    }
 }

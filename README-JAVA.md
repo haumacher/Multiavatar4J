@@ -83,8 +83,7 @@ public class AdvancedExample {
 
         // Force specific character and theme
         // Character: GIRL, Theme: A
-        Multiavatar.Version version = new Multiavatar.Version(Multiavatar.AvatarCharacter.GIRL, Multiavatar.Theme.A);
-        String svgForced = Multiavatar.generate("Test", false, version);
+        String svgForced = Multiavatar.generate("Test", false, Multiavatar.AvatarCharacter.GIRL, Multiavatar.Theme.A);
 
         // Different inputs produce different avatars
         String avatar1 = Multiavatar.generate("Alice");

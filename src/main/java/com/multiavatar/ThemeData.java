@@ -25,6 +25,21 @@ class ThemeData {
             this.eyes = eyes;
             this.top = top;
         }
+
+		/**
+		 * Gets the color array for a specific part from theme data
+		 */
+		public String[] getColors(AvatarPart avatarPart) {
+		    switch (avatarPart) {
+		        case ENV: return env;
+		        case CLO: return clo;
+		        case HEAD: return head;
+		        case MOUTH: return mouth;
+		        case EYES: return eyes;
+		        case TOP: return top;
+		        default: return new String[0];
+		    }
+		}
     }
 
     static class CharacterThemes {

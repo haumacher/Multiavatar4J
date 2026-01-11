@@ -40,7 +40,7 @@ public class Coordinate {
 	        return;
 	    }
 	
-	    String[] colors = part.getColors(themeData);
+	    String[] colors = themeData.getColors(part);
 	
 	    // Get SVG template
 	    Template svgTemplate = SvgData.getSvgTemplate(character, part);

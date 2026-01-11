@@ -11,8 +11,8 @@ public class CompareJsJavaOutput {
     public static void main(String[] args) throws Exception {
         String input = "Test";
 
-        // Generate using Java
-        String javaOutput = Multiavatar.generate(input, false, Multiavatar.CharacterType.GEEKNOT, Multiavatar.CharacterTheme.A);
+        // Generate using Java (predefined avatar)
+        String javaOutput = Multiavatar.generate(Multiavatar.CharacterType.GEEKNOT, Multiavatar.CharacterTheme.A);
 
         // Debug: Print which parts are being used
         System.out.println("=== DEBUG: Hash and Parts for: \"" + input + "\" ===");

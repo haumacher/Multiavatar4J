@@ -152,8 +152,8 @@ public class Example {
         // Without background circle
         String svgNoBackground = Multiavatar.generate("Binx Bond", true);
 
-        // Force specific character/theme
-        String svgForced = Multiavatar.generate("Test", false, Multiavatar.AvatarCharacter.GIRL, Multiavatar.Theme.A);
+        // Generate predefined avatar with specific character/theme
+        String svgPredefined = Multiavatar.generate(Multiavatar.CharacterType.GIRL, Multiavatar.CharacterTheme.A);
     }
 }
 ```

@@ -33,7 +33,7 @@ public class Multiavatar {
      * @return The complete SVG code as a string
      */
     public static String generate(String string) {
-        return generate(string, false, null, null);
+        return generate(string, false);
     }
 
     /**
@@ -44,19 +44,6 @@ public class Multiavatar {
      * @return The complete SVG code as a string
      */
     public static String generate(String string, boolean sansEnv) {
-        return generate(string, sansEnv, null, null);
-    }
-
-    /**
-     * Generates an avatar SVG from the given string with forced character and theme.
-     *
-     * @param string    The input string to generate the avatar from
-     * @param sansEnv   If true, returns the avatar without the circular background
-     * @param character Force a specific character (e.g., GIRL, ROBO)
-     * @param theme     Force a specific theme (A, B, or C)
-     * @return The complete SVG code as a string
-     */
-    public static String generate(String string, boolean sansEnv, CharacterType character, CharacterTheme theme) {
         if (string == null) {
             string = "";
         }
@@ -67,8 +54,37 @@ public class Multiavatar {
         }
 
         Avatar avatar = Avatar.fromId(string);
+        return renderAvatar(avatar, sansEnv);
+    }
 
-        // Get the SVG code for each part
+    /**
+     * Generates a predefined avatar SVG with specific character and theme.
+     *
+     * @param character The character to use (e.g., GIRL, ROBO)
+     * @param theme     The theme to use (A, B, or C)
+     * @return The complete SVG code as a string
+     */
+    public static String generate(CharacterType character, CharacterTheme theme) {
+        return generate(character, theme, false);
+    }
+
+    /**
+     * Generates a predefined avatar SVG with specific character and theme.
+     *
+     * @param character The character to use (e.g., GIRL, ROBO)
+     * @param theme     The theme to use (A, B, or C)
+     * @param sansEnv   If true, returns the avatar without the circular background
+     * @return The complete SVG code as a string
+     */
+    public static String generate(CharacterType character, CharacterTheme theme, boolean sansEnv) {
+        Avatar avatar = Avatar.fromCharacterTheme(character, theme);
+        return renderAvatar(avatar, sansEnv);
+    }
+
+    /**
+     * Renders an avatar to SVG format
+     */
+    private static String renderAvatar(Avatar avatar, boolean sansEnv) {
         StringBuilder result = new StringBuilder(SVG_START);
 
         // Add generator attribution (fulfills license requirement)
@@ -79,21 +95,12 @@ public class Multiavatar {
                 continue; // Skip environment if sansEnv is true
             }
 
-            Coordinate partWithTheme = avatar.getValue(part);
-            CharacterType partCharacter = partWithTheme.character;
-            CharacterTheme partTheme = partWithTheme.theme;
-
-            // Use forced character/theme if provided, otherwise use generated ones
-            CharacterType finalCharacter = (character != null) ? character : partCharacter;
-            CharacterTheme finalTheme = (theme != null) ? theme : partTheme;
-
-            String svgPart = getFinalSvg(part, finalCharacter, finalTheme);
-
+            Coordinate coordinate = avatar.getValue(part);
+            String svgPart = getFinalSvg(part, coordinate.character, coordinate.theme);
             result.append(svgPart);
         }
 
         result.append(SVG_END);
-
         return result.toString();
     }
 
@@ -213,6 +220,18 @@ public class Multiavatar {
 	        avatar.eyes = Coordinate.fromPartNumber(getPartNumber(hashString.substring(8, 10)));
 	        avatar.top = Coordinate.fromPartNumber(getPartNumber(hashString.substring(10, 12)));
 	        return avatar;
+		}
+
+		public static Avatar fromCharacterTheme(CharacterType character, CharacterTheme theme) {
+			Avatar avatar = new Avatar();
+			Coordinate coordinate = new Coordinate(character, theme);
+			avatar.env = coordinate;
+			avatar.clo = coordinate;
+			avatar.head = coordinate;
+			avatar.mouth = coordinate;
+			avatar.eyes = coordinate;
+			avatar.top = coordinate;
+			return avatar;
 		}
 
 	}

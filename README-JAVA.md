@@ -81,9 +81,9 @@ public class AdvancedExample {
         // Generate without background circle
         String svgWithoutBackground = Multiavatar.generate("User Name", true);
 
-        // Force specific character and theme
+        // Generate predefined avatar with specific character and theme
         // Character: GIRL, Theme: A
-        String svgForced = Multiavatar.generate("Test", false, Multiavatar.AvatarCharacter.GIRL, Multiavatar.Theme.A);
+        String svgPredefined = Multiavatar.generate(Multiavatar.CharacterType.GIRL, Multiavatar.CharacterTheme.A);
 
         // Different inputs produce different avatars
         String avatar1 = Multiavatar.generate("Alice");

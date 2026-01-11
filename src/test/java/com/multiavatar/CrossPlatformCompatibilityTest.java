@@ -60,10 +60,12 @@ public class CrossPlatformCompatibilityTest {
                 // Generate avatar using Java implementation
                 String javaOutput;
                 if (vector.version != null) {
+                    // Use predefined character/theme
                     Multiavatar.CharacterType character = Multiavatar.CharacterType.fromId(vector.version.part);
                     Multiavatar.CharacterTheme theme = Multiavatar.CharacterTheme.fromCode(vector.version.theme);
-                    javaOutput = Multiavatar.generate(vector.input, vector.sansEnv, character, theme);
+                    javaOutput = Multiavatar.generate(character, theme, vector.sansEnv);
                 } else {
+                    // Generate from string ID
                     javaOutput = Multiavatar.generate(vector.input, vector.sansEnv);
                 }
 

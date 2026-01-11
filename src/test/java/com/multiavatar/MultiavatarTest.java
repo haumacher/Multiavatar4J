@@ -49,15 +49,15 @@ public class MultiavatarTest {
     @Test
     public void testEmptyString() {
         String svg = Multiavatar.generate("");
-        assertNotNull("Empty string should generate valid SVG", svg);
-        assertTrue("SVG should be valid", svg.startsWith("<svg"));
+        assertNotNull("Empty string should return empty string", svg);
+        assertEquals("Empty string should return empty string", "", svg);
     }
 
     @Test
     public void testNullString() {
         String svg = Multiavatar.generate(null);
-        assertNotNull("Null should generate valid SVG", svg);
-        assertTrue("SVG should be valid", svg.startsWith("<svg"));
+        assertNotNull("Null should return empty string", svg);
+        assertEquals("Null should return empty string", "", svg);
     }
 
     @Test

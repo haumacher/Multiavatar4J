@@ -9,12 +9,32 @@ import java.nio.file.Paths;
  */
 public class CompareJsJavaOutput {
     public static void main(String[] args) throws Exception {
-        String input = "Binx Bond";
+        String input = "Test";
+        Multiavatar.Version version = new Multiavatar.Version("05", 'A');
 
         // Generate using Java
-        String javaOutput = Multiavatar.generate(input);
+        String javaOutput = Multiavatar.generate(input, false, version);
 
-        System.out.println("=== Comparing Output for: \"" + input + "\" ===\n");
+        // Debug: Print which parts are being used
+        System.out.println("=== DEBUG: Hash and Parts for: \"" + input + "\" ===");
+        java.security.MessageDigest digest = java.security.MessageDigest.getInstance("SHA-256");
+        byte[] hash = digest.digest(input.getBytes("UTF-8"));
+        StringBuilder hexString = new StringBuilder();
+        for (byte b : hash) {
+            String hex = Integer.toHexString(0xff & b);
+            if (hex.length() == 1) hexString.append('0');
+            hexString.append(hex);
+        }
+        String hashStr = hexString.toString();
+        String digitsOnly = hashStr.replaceAll("\\D", "");
+        String first12 = digitsOnly.substring(0, Math.min(12, digitsOnly.length()));
+        System.out.println("Hash: " + hashStr);
+        System.out.println("Digits only: " + digitsOnly);
+        System.out.println("First 12: " + first12);
+        System.out.println();
+
+        String versionStr = version != null ? " [" + version.part + version.theme + "]" : "";
+        System.out.println("=== Comparing Output for: \"" + input + "\"" + versionStr + " ===\n");
 
         System.out.println("Java output length: " + javaOutput.length());
         System.out.println("Java output (first 300 chars):");
@@ -25,8 +45,8 @@ public class CompareJsJavaOutput {
         try {
             String jsData = new String(Files.readAllBytes(Paths.get("test-vectors.json")));
 
-            // Find the entry for "Binx Bond"
-            int idx = jsData.indexOf("\"input\": \"Binx Bond\"");
+            // Find the entry for case 15 (Test with version 05A)
+            int idx = jsData.indexOf("\"id\": 15");
             if (idx > 0) {
                 int outputIdx = jsData.indexOf("\"output\":", idx);
                 int outputStart = jsData.indexOf("\"", outputIdx + 9) + 1;
@@ -95,7 +115,7 @@ public class CompareJsJavaOutput {
                 System.out.println("\nMatch: " + javaOutput.equals(jsOutput));
 
             } else {
-                System.out.println("Could not find 'Binx Bond' in test vectors");
+                System.out.println("Could not find case 15 in test vectors");
             }
         } catch (Exception e) {
             System.out.println("Error reading test vectors: " + e.getMessage());

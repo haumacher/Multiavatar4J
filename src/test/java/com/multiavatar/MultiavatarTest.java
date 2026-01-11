@@ -78,7 +78,7 @@ public class MultiavatarTest {
 
     @Test
     public void testPredefinedAvatar() {
-        String svg = Multiavatar.generate(Multiavatar.CharacterType.GIRL, Multiavatar.CharacterTheme.A);
+        String svg = Multiavatar.generate(CharacterType.GIRL, Theme.A);
 
         assertNotNull("Predefined avatar SVG should not be null", svg);
         assertTrue("SVG should be valid", svg.startsWith("<svg"));
@@ -86,9 +86,9 @@ public class MultiavatarTest {
 
     @Test
     public void testPredefinedAvatarDifferentThemes() {
-        String svgA = Multiavatar.generate(Multiavatar.CharacterType.GIRL, Multiavatar.CharacterTheme.A);
-        String svgB = Multiavatar.generate(Multiavatar.CharacterType.GIRL, Multiavatar.CharacterTheme.B);
-        String svgC = Multiavatar.generate(Multiavatar.CharacterType.GIRL, Multiavatar.CharacterTheme.C);
+        String svgA = Multiavatar.generate(CharacterType.GIRL, Theme.A);
+        String svgB = Multiavatar.generate(CharacterType.GIRL, Theme.B);
+        String svgC = Multiavatar.generate(CharacterType.GIRL, Theme.C);
 
         // Different themes should produce different SVGs
         assertNotEquals("Theme A and B should differ", svgA, svgB);

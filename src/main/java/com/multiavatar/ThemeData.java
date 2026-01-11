@@ -9,7 +9,7 @@ import java.util.EnumMap;
  */
 class ThemeData {
 
-    static class Theme {
+    static class Colors {
         String[] env;
         String[] clo;
         String[] head;
@@ -17,7 +17,7 @@ class ThemeData {
         String[] eyes;
         String[] top;
 
-        Theme(String[] env, String[] clo, String[] head, String[] mouth, String[] eyes, String[] top) {
+        Colors(String[] env, String[] clo, String[] head, String[] mouth, String[] eyes, String[] top) {
             this.env = env;
             this.clo = clo;
             this.head = head;
@@ -28,32 +28,32 @@ class ThemeData {
     }
 
     static class CharacterThemes {
-        private final EnumMap<Multiavatar.CharacterTheme, Theme> themes;
+        private final EnumMap<Theme, Colors> themes;
 
-        CharacterThemes(Theme A, Theme B, Theme C) {
-            this.themes = new EnumMap<>(Multiavatar.CharacterTheme.class);
-            this.themes.put(Multiavatar.CharacterTheme.A, A);
-            this.themes.put(Multiavatar.CharacterTheme.B, B);
-            this.themes.put(Multiavatar.CharacterTheme.C, C);
+        CharacterThemes(Colors A, Colors B, Colors C) {
+            this.themes = new EnumMap<>(Theme.class);
+            this.themes.put(Theme.A, A);
+            this.themes.put(Theme.B, B);
+            this.themes.put(Theme.C, C);
         }
 
-        Theme getTheme(Multiavatar.CharacterTheme theme) {
+        Colors getTheme(Theme theme) {
             return themes.get(theme);
         }
     }
 
-    private static final EnumMap<Multiavatar.CharacterType, CharacterThemes> THEMES = createThemes();
+    private static final EnumMap<CharacterType, CharacterThemes> THEMES = createThemes();
 
-    static CharacterThemes getCharacterThemes(Multiavatar.CharacterType character) {
+    static CharacterThemes getCharacterThemes(CharacterType character) {
         return THEMES.get(character);
     }
 
-    private static EnumMap<Multiavatar.CharacterType, CharacterThemes> createThemes() {
-        EnumMap<Multiavatar.CharacterType, CharacterThemes> themes = new EnumMap<>(Multiavatar.CharacterType.class);
+    private static EnumMap<CharacterType, CharacterThemes> createThemes() {
+        EnumMap<CharacterType, CharacterThemes> themes = new EnumMap<>(CharacterType.class);
 
         // Character 00 - Robo
-        themes.put(Multiavatar.CharacterType.ROBO, new CharacterThemes(
-            new Theme(
+        themes.put(CharacterType.ROBO, new CharacterThemes(
+            new Colors(
                 new String[]{"#ff2f2b"},
                 new String[]{"#fff", "#000"},
                 new String[]{"#fff"},
@@ -61,7 +61,7 @@ class ThemeData {
                 new String[]{"#000", "none", "#00FFFF"},
                 new String[]{"#fff", "#fff"}
             ),
-            new Theme(
+            new Colors(
                 new String[]{"#ff1ec1"},
                 new String[]{"#000", "#fff"},
                 new String[]{"#ffc1c1"},
@@ -69,7 +69,7 @@ class ThemeData {
                 new String[]{"#FF2D00", "#fff", "none"},
                 new String[]{"#a21d00", "#fff"}
             ),
-            new Theme(
+            new Colors(
                 new String[]{"#0079b1"},
                 new String[]{"#0e00b1", "#d1fffe"},
                 new String[]{"#f5aa77"},
@@ -80,8 +80,8 @@ class ThemeData {
         ));
 
         // Character 01 - Girl
-        themes.put(Multiavatar.CharacterType.GIRL, new CharacterThemes(
-            new Theme(
+        themes.put(CharacterType.GIRL, new CharacterThemes(
+            new Colors(
                 new String[]{"#a50000"},
                 new String[]{"#f06", "#8e0039"},
                 new String[]{"#85492C"},
@@ -89,7 +89,7 @@ class ThemeData {
                 new String[]{"#000", "#ff9809"},
                 new String[]{"#ff9809", "#ff9809", "none", "none"}
             ),
-            new Theme(
+            new Colors(
                 new String[]{"#40E83B"},
                 new String[]{"#00650b", "#62ce5a"},
                 new String[]{"#f7c1a6"},
@@ -97,7 +97,7 @@ class ThemeData {
                 new String[]{"#000", "#ff833b"},
                 new String[]{"#67FFCC", "none", "none", "#ecff3b"}
             ),
-            new Theme(
+            new Colors(
                 new String[]{"#ff2c2c"},
                 new String[]{"#fff", "#000"},
                 new String[]{"#ffce8b"},
@@ -108,8 +108,8 @@ class ThemeData {
         ));
 
         // Character 02 - Blonde
-        themes.put(Multiavatar.CharacterType.BLONDE, new CharacterThemes(
-            new Theme(
+        themes.put(CharacterType.BLONDE, new CharacterThemes(
+            new Colors(
                 new String[]{"#ff7520"},
                 new String[]{"#d12823"},
                 new String[]{"#fee3c5"},
@@ -117,7 +117,7 @@ class ThemeData {
                 new String[]{"#000", "none"},
                 new String[]{"#000", "none", "none", "#FFCC00", "red"}
             ),
-            new Theme(
+            new Colors(
                 new String[]{"#ff9700"},
                 new String[]{"#000"},
                 new String[]{"#d2ad6d"},
@@ -125,7 +125,7 @@ class ThemeData {
                 new String[]{"#000", "#00ffdc"},
                 new String[]{"#fdff00", "#fdff00", "none", "none", "none"}
             ),
-            new Theme(
+            new Colors(
                 new String[]{"#26a7ff"},
                 new String[]{"#d85cd7"},
                 new String[]{"#542e02"},
@@ -136,8 +136,8 @@ class ThemeData {
         ));
 
         // Character 03 - Evilnormie
-        themes.put(Multiavatar.CharacterType.GUY, new CharacterThemes(
-            new Theme(
+        themes.put(CharacterType.GUY, new CharacterThemes(
+            new Colors(
                 new String[]{"#6FC30E"},
                 new String[]{"#b4e1fa", "#5b5d6e", "#515262", "#a0d2f0", "#a0d2f0"},
                 new String[]{"#fae3b9"},
@@ -145,7 +145,7 @@ class ThemeData {
                 new String[]{"#000"},
                 new String[]{"#8eff45", "#8eff45", "none", "none"}
             ),
-            new Theme(
+            new Colors(
                 new String[]{"#00a58c"},
                 new String[]{"#000", "none", "none", "none", "none"},
                 new String[]{"#FAD2B9"},
@@ -153,7 +153,7 @@ class ThemeData {
                 new String[]{"#000"},
                 new String[]{"#FFC600", "none", "#FFC600", "none"}
             ),
-            new Theme(
+            new Colors(
                 new String[]{"#ff501f"},
                 new String[]{"#000", "#ff0000", "#ff0000", "#7d7d7d", "#7d7d7d"},
                 new String[]{"#fff3dc"},
@@ -164,8 +164,8 @@ class ThemeData {
         ));
 
         // Character 04 - Country
-        themes.put(Multiavatar.CharacterType.COUNTRY, new CharacterThemes(
-            new Theme(
+        themes.put(CharacterType.COUNTRY, new CharacterThemes(
+            new Colors(
                 new String[]{"#fc0"},
                 new String[]{"#901e0e", "#ffbe1e", "#ffbe1e", "#c55f54"},
                 new String[]{"#f8d9ad"},
@@ -173,7 +173,7 @@ class ThemeData {
                 new String[]{"#000"},
                 new String[]{"#583D00", "#AF892E", "#462D00", "#a0a0a0"}
             ),
-            new Theme(
+            new Colors(
                 new String[]{"#386465"},
                 new String[]{"#fff", "#333", "#333", "#333"},
                 new String[]{"#FFD79D"},
@@ -181,7 +181,7 @@ class ThemeData {
                 new String[]{"#000"},
                 new String[]{"#27363C", "#5DCAD4", "#314652", "#333"}
             ),
-            new Theme(
+            new Colors(
                 new String[]{"#DFFF00"},
                 new String[]{"#304267", "#aab0b1", "#aab0b1", "#aab0b1"},
                 new String[]{"#e6b876"},
@@ -192,8 +192,8 @@ class ThemeData {
         ));
 
         // Character 05 - Geeknot
-        themes.put(Multiavatar.CharacterType.GEEKNOT, new CharacterThemes(
-            new Theme(
+        themes.put(CharacterType.GEEKNOT, new CharacterThemes(
+            new Colors(
                 new String[]{"#a09300"},
                 new String[]{"#c7d4e2", "#435363", "#435363", "#141720", "#141720", "#e7ecf2", "#e7ecf2"},
                 new String[]{"#f5d4a6"},
@@ -201,7 +201,7 @@ class ThemeData {
                 new String[]{"#000", "#000", "#000", "#000", "#000", "#000", "#000", "#000", "#fff", "#fff", "#fff", "#fff"},
                 new String[]{"none", "#fdff00"}
             ),
-            new Theme(
+            new Colors(
                 new String[]{"#b3003e"},
                 new String[]{"#000", "#435363", "#435363", "#000", "none", "#e7ecf2", "#e7ecf2"},
                 new String[]{"#f5d4a6"},
@@ -209,7 +209,7 @@ class ThemeData {
                 new String[]{"#9ff3ff;opacity:0.96", "#000", "#9ff3ff;opacity:0.96", "#000", "#2f508a", "#000", "#000", "#000", "none", "none", "none", "none"},
                 new String[]{"#ff9a00", "#ff9a00"}
             ),
-            new Theme(
+            new Colors(
                 new String[]{"#884f00"},
                 new String[]{"#ff0000", "#fff", "#fff", "#141720", "#141720", "#e7ecf2", "#e7ecf2"},
                 new String[]{"#c57b14"},
@@ -220,8 +220,8 @@ class ThemeData {
         ));
 
         // Character 06 - Asian
-        themes.put(Multiavatar.CharacterType.ASIAN, new CharacterThemes(
-            new Theme(
+        themes.put(CharacterType.ASIAN, new CharacterThemes(
+            new Colors(
                 new String[]{"#8acf00"},
                 new String[]{"#ee2829", "#ff0"},
                 new String[]{"#ffce73"},
@@ -229,7 +229,7 @@ class ThemeData {
                 new String[]{"#000"},
                 new String[]{"#000", "#000", "none", "#000", "#ff4e4e", "#000"}
             ),
-            new Theme(
+            new Colors(
                 new String[]{"#00d2a3"},
                 new String[]{"#0D0046", "#ffce73"},
                 new String[]{"#ffce73"},
@@ -237,7 +237,7 @@ class ThemeData {
                 new String[]{"#000"},
                 new String[]{"#000", "#000", "#000", "none", "#ffb358", "#000", "none", "none"}
             ),
-            new Theme(
+            new Colors(
                 new String[]{"#ff184e"},
                 new String[]{"#000", "none"},
                 new String[]{"#ffce73"},
@@ -248,8 +248,8 @@ class ThemeData {
         ));
 
         // Character 07 - Punk
-        themes.put(Multiavatar.CharacterType.PUNK, new CharacterThemes(
-            new Theme(
+        themes.put(CharacterType.PUNK, new CharacterThemes(
+            new Colors(
                 new String[]{"#00deae"},
                 new String[]{"#ff0000"},
                 new String[]{"#ffce94"},
@@ -257,7 +257,7 @@ class ThemeData {
                 new String[]{"#e91e63", "#000", "#e91e63", "#000", "#000", "#000"},
                 new String[]{"#dd104f", "#dd104f", "#f73b6c", "#dd104f"}
             ),
-            new Theme(
+            new Colors(
                 new String[]{"#181284"},
                 new String[]{"#491f49", "#ff9809", "#491f49"},
                 new String[]{"#f6ba97"},
@@ -265,7 +265,7 @@ class ThemeData {
                 new String[]{"#c4ffe4", "#000", "#c4ffe4", "#000", "#000", "#000"},
                 new String[]{"none", "none", "#d6f740", "#516303"}
             ),
-            new Theme(
+            new Colors(
                 new String[]{"#bcf700"},
                 new String[]{"#ff14e4", "#000", "#14fffd"},
                 new String[]{"#7b401e"},
@@ -276,8 +276,8 @@ class ThemeData {
         ));
 
         // Character 08 - Afrohair
-        themes.put(Multiavatar.CharacterType.AFROHAIR, new CharacterThemes(
-            new Theme(
+        themes.put(CharacterType.AFROHAIR, new CharacterThemes(
+            new Colors(
                 new String[]{"#0df"},
                 new String[]{"#571e57", "#ff0"},
                 new String[]{"#f2c280"},
@@ -285,7 +285,7 @@ class ThemeData {
                 new String[]{"#795548", "#000"},
                 new String[]{"#de3b00", "none"}
             ),
-            new Theme(
+            new Colors(
                 new String[]{"#B400C2"},
                 new String[]{"#0D204A", "#00ffdf"},
                 new String[]{"#ca8628"},
@@ -293,7 +293,7 @@ class ThemeData {
                 new String[]{"#cbbdaf", "#000"},
                 new String[]{"#000", "#000"}
             ),
-            new Theme(
+            new Colors(
                 new String[]{"#ffe926"},
                 new String[]{"#00d6af", "#000"},
                 new String[]{"#8c5100"},
@@ -304,8 +304,8 @@ class ThemeData {
         ));
 
         // Character 09 - Normie Female
-        themes.put(Multiavatar.CharacterType.NORMIE_FEMALE, new CharacterThemes(
-            new Theme(
+        themes.put(CharacterType.NORMIE_FEMALE, new CharacterThemes(
+            new Colors(
                 new String[]{"#4aff0c"},
                 new String[]{"#101010", "#fff", "#fff"},
                 new String[]{"#dbbc7f"},
@@ -313,7 +313,7 @@ class ThemeData {
                 new String[]{"#000", "none", "none"},
                 new String[]{"#531148", "#531148", "#531148", "none"}
             ),
-            new Theme(
+            new Colors(
                 new String[]{"#FFC107"},
                 new String[]{"#033c58", "#fff", "#fff"},
                 new String[]{"#dbc97f"},
@@ -321,7 +321,7 @@ class ThemeData {
                 new String[]{"none", "#000", "#fff"},
                 new String[]{"#FFEB3B", "#FFEB3B", "none", "#FFEB3B"}
             ),
-            new Theme(
+            new Colors(
                 new String[]{"#FF9800"},
                 new String[]{"#b40000", "#fff", "#fff"},
                 new String[]{"#E2AF6B"},
@@ -332,8 +332,8 @@ class ThemeData {
         ));
 
         // Character 10 - Older
-        themes.put(Multiavatar.CharacterType.OLDER, new CharacterThemes(
-            new Theme(
+        themes.put(CharacterType.OLDER, new CharacterThemes(
+            new Colors(
                 new String[]{"#104c8c"},
                 new String[]{"#354B65", "#3D8EBB", "#89D0DA", "#00FFFD"},
                 new String[]{"#cc9a5c"},
@@ -341,7 +341,7 @@ class ThemeData {
                 new String[]{"#000", "#000"},
                 new String[]{"#fff", "#fff", "none"}
             ),
-            new Theme(
+            new Colors(
                 new String[]{"#0DC15C"},
                 new String[]{"#212121", "#fff", "#212121", "#fff"},
                 new String[]{"#dca45f"},
@@ -349,7 +349,7 @@ class ThemeData {
                 new String[]{"#000", "#000"},
                 new String[]{"none", "#792B74", "#792B74"}
             ),
-            new Theme(
+            new Colors(
                 new String[]{"#ffe500"},
                 new String[]{"#1e5e80", "#fff", "#1e5e80", "#fff"},
                 new String[]{"#e8bc86"},
@@ -360,8 +360,8 @@ class ThemeData {
         ));
 
         // Character 11 - Firehair
-        themes.put(Multiavatar.CharacterType.FIREHAIR, new CharacterThemes(
-            new Theme(
+        themes.put(CharacterType.FIREHAIR, new CharacterThemes(
+            new Colors(
                 new String[]{"#4a3f73"},
                 new String[]{"#e6e9ee", "#f1543f", "#ff7058", "#fff", "#fff"},
                 new String[]{"#b27e5b"},
@@ -369,7 +369,7 @@ class ThemeData {
                 new String[]{"#000", "#000", "#57FFFD"},
                 new String[]{"#ffc", "#ffc", "#ffc"}
             ),
-            new Theme(
+            new Colors(
                 new String[]{"#00a08d"},
                 new String[]{"#FFBA32", "#484848", "#4e4e4e", "#fff", "#fff"},
                 new String[]{"#ab5f2c"},
@@ -377,7 +377,7 @@ class ThemeData {
                 new String[]{"#000", "#ff23fa;opacity:0.39", "#000"},
                 new String[]{"#ff90f4", "#ff90f4", "#ff90f4"}
             ),
-            new Theme(
+            new Colors(
                 new String[]{"#22535d"},
                 new String[]{"#000", "#ff2500", "#ff2500", "#fff", "#fff"},
                 new String[]{"#a76c44"},
@@ -388,8 +388,8 @@ class ThemeData {
         ));
 
         // Character 12 - Blond
-        themes.put(Multiavatar.CharacterType.BLOND, new CharacterThemes(
-            new Theme(
+        themes.put(CharacterType.BLOND, new CharacterThemes(
+            new Colors(
                 new String[]{"#2668DC"},
                 new String[]{"#2385c6", "#b8d0e0", "#b8d0e0"},
                 new String[]{"#ad8a60"},
@@ -397,7 +397,7 @@ class ThemeData {
                 new String[]{"#7fb5a2", "#d1eddf", "#301e19"},
                 new String[]{"#fff510", "#fff510"}
             ),
-            new Theme(
+            new Colors(
                 new String[]{"#643869"},
                 new String[]{"#D67D1B", "#b8d0e0", "#b8d0e0"},
                 new String[]{"#CC985A", "none0000"},
@@ -405,7 +405,7 @@ class ThemeData {
                 new String[]{"#1f2644", "#9b97ce", "#301e19"},
                 new String[]{"#00eaff", "none"}
             ),
-            new Theme(
+            new Colors(
                 new String[]{"#F599FF"},
                 new String[]{"#2823C6", "#b8d0e0", "#b8d0e0"},
                 new String[]{"#C7873A"},
@@ -416,8 +416,8 @@ class ThemeData {
         ));
 
         // Character 13 - Ateam
-        themes.put(Multiavatar.CharacterType.ATEAM, new CharacterThemes(
-            new Theme(
+        themes.put(CharacterType.ATEAM, new CharacterThemes(
+            new Colors(
                 new String[]{"#d10084"},
                 new String[]{"#efedee", "#00a1e0", "#00a1e0", "#efedee", "#ffce1c"},
                 new String[]{"#b35f49"},
@@ -425,7 +425,7 @@ class ThemeData {
                 new String[]{"#000"},
                 new String[]{"#000", "none", "#000", "none"}
             ),
-            new Theme(
+            new Colors(
                 new String[]{"#E6C117"},
                 new String[]{"#efedee", "#ec0033", "#ec0033", "#efedee", "#f2ff05"},
                 new String[]{"#ffc016"},
@@ -433,7 +433,7 @@ class ThemeData {
                 new String[]{"#000"},
                 new String[]{"#ffe900", "#ffe900", "none", "#ffe900"}
             ),
-            new Theme(
+            new Colors(
                 new String[]{"#1d8c00"},
                 new String[]{"#e000cb", "#fff", "#fff", "#e000cb", "#ffce1c"},
                 new String[]{"#b96438"},
@@ -444,8 +444,8 @@ class ThemeData {
         ));
 
         // Character 14 - Rasta
-        themes.put(Multiavatar.CharacterType.RASTA, new CharacterThemes(
-            new Theme(
+        themes.put(CharacterType.RASTA, new CharacterThemes(
+            new Colors(
                 new String[]{"#fc0065"},
                 new String[]{"#708913", "#fdea14", "#708913", "#fdea14", "#708913"},
                 new String[]{"#DEA561"},
@@ -453,7 +453,7 @@ class ThemeData {
                 new String[]{"#000"},
                 new String[]{"#32393f", "#32393f", "#32393f", "#32393f", "#32393f", "#32393f", "#32393f", "#32393f", "#32393f", "#32393f", "#32393f", "#32393f", "#32393f", "#32393f", "#32393f", "#32393f", "#32393f"}
             ),
-            new Theme(
+            new Colors(
                 new String[]{"#81f72e"},
                 new String[]{"#ff0000", "#ffc107", "#ff0000", "#ffc107", "#ff0000"},
                 new String[]{"#ef9831"},
@@ -461,7 +461,7 @@ class ThemeData {
                 new String[]{"#000"},
                 new String[]{"#FFFAAD", "#FFFAAD", "#FFFAAD", "#FFFAAD", "#FFFAAD", "#FFFAAD", "#FFFAAD", "#FFFAAD", "#FFFAAD", "#FFFAAD", "#FFFAAD", "#FFFAAD", "#FFFAAD", "none", "none", "none", "none"}
             ),
-            new Theme(
+            new Colors(
                 new String[]{"#00D872"},
                 new String[]{"#590D00", "#FD1336", "#590D00", "#FD1336", "#590D00"},
                 new String[]{"#c36c00"},
@@ -472,8 +472,8 @@ class ThemeData {
         ));
 
         // Character 15 - Meta
-        themes.put(Multiavatar.CharacterType.STREET, new CharacterThemes(
-            new Theme(
+        themes.put(CharacterType.STREET, new CharacterThemes(
+            new Colors(
                 new String[]{"#111"},
                 new String[]{"#000", "#00FFFF"},
                 new String[]{"#755227"},
@@ -481,7 +481,7 @@ class ThemeData {
                 new String[]{"black", "#008;opacity:0.67", "aqua"},
                 new String[]{"#fff", "#fff", "#fff", "#fff", "#fff"}
             ),
-            new Theme(
+            new Colors(
                 new String[]{"#00D0D4"},
                 new String[]{"#000", "#fff"},
                 new String[]{"#755227"},
@@ -489,7 +489,7 @@ class ThemeData {
                 new String[]{"black", "#1df7ff;opacity:0.64", "#fcff2c"},
                 new String[]{"#fff539", "none", "#fff539", "none", "#fff539"}
             ),
-            new Theme(
+            new Colors(
                 new String[]{"#DC75FF"},
                 new String[]{"#000", "#FFBDEC"},
                 new String[]{"#997549"},

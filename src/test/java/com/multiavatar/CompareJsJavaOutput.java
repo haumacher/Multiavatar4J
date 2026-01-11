@@ -12,7 +12,7 @@ public class CompareJsJavaOutput {
         String input = "Test";
 
         // Generate using Java (predefined avatar)
-        String javaOutput = Multiavatar.generate(Multiavatar.CharacterType.GEEKNOT, Multiavatar.CharacterTheme.A);
+        String javaOutput = Multiavatar.generate(CharacterType.GEEKNOT, Theme.A);
 
         // Debug: Print which parts are being used
         System.out.println("=== DEBUG: Hash and Parts for: \"" + input + "\" ===");

@@ -3,8 +3,8 @@ package com.multiavatar;
 public class TestChar05Debug {
     public static void main(String[] args) {
         // Get theme for character GEEKNOT (05) Theme A
-        ThemeData.CharacterThemes ct = ThemeData.getCharacterThemes(Multiavatar.CharacterType.GEEKNOT);
-        ThemeData.Theme theme = ct.getTheme(Multiavatar.CharacterTheme.A);
+        ThemeData.CharacterThemes ct = ThemeData.getCharacterThemes(CharacterType.GEEKNOT);
+        ThemeData.Colors theme = ct.getTheme(Theme.A);
         String[] eyes = theme.eyes;
         System.out.println("Character GEEKNOT (05) Theme A eyes colors (" + eyes.length + " total):");
         for (int i = 0; i < eyes.length; i++) {
@@ -12,7 +12,7 @@ public class TestChar05Debug {
         }
 
         // Generate and check output
-        String svg = Multiavatar.generate(Multiavatar.CharacterType.GEEKNOT, Multiavatar.CharacterTheme.A);
+        String svg = Multiavatar.generate(CharacterType.GEEKNOT, Theme.A);
 
         // Extract just the eyes SVG for comparison
         int eyesStart = svg.indexOf("<path d=\"m70.959 94.985");

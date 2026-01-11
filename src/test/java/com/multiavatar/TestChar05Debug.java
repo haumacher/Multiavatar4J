@@ -12,7 +12,7 @@ public class TestChar05Debug {
         }
 
         // Generate and check output
-        String svg = Multiavatar.generate("Test", false, new Multiavatar.Version("05", 'A'));
+        String svg = Multiavatar.generate("Test", false, new Multiavatar.Version(Multiavatar.AvatarCharacter.GEEKNOT, 'A'));
 
         // Extract just the eyes SVG for comparison
         int eyesStart = svg.indexOf("<path d=\"m70.959 94.985");

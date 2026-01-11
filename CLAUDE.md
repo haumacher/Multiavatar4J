@@ -153,7 +153,7 @@ public class Example {
         String svgNoBackground = Multiavatar.generate("Binx Bond", true);
 
         // Force specific character/theme
-        Multiavatar.Version version = new Multiavatar.Version("01", 'A');
+        Multiavatar.Version version = new Multiavatar.Version(Multiavatar.AvatarCharacter.GIRL, 'A');
         String svgForced = Multiavatar.generate("Test", false, version);
     }
 }

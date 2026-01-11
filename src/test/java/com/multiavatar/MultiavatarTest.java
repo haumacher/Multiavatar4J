@@ -78,7 +78,7 @@ public class MultiavatarTest {
 
     @Test
     public void testVersion() {
-        Multiavatar.Version version = new Multiavatar.Version(Multiavatar.AvatarCharacter.GIRL, 'A');
+        Multiavatar.Version version = new Multiavatar.Version(Multiavatar.AvatarCharacter.GIRL, Multiavatar.Theme.A);
         String svg = Multiavatar.generate("Test", false, version);
 
         assertNotNull("Version-forced SVG should not be null", svg);
@@ -87,9 +87,9 @@ public class MultiavatarTest {
 
     @Test
     public void testVersionDifferentThemes() {
-        Multiavatar.Version versionA = new Multiavatar.Version(Multiavatar.AvatarCharacter.GIRL, 'A');
-        Multiavatar.Version versionB = new Multiavatar.Version(Multiavatar.AvatarCharacter.GIRL, 'B');
-        Multiavatar.Version versionC = new Multiavatar.Version(Multiavatar.AvatarCharacter.GIRL, 'C');
+        Multiavatar.Version versionA = new Multiavatar.Version(Multiavatar.AvatarCharacter.GIRL, Multiavatar.Theme.A);
+        Multiavatar.Version versionB = new Multiavatar.Version(Multiavatar.AvatarCharacter.GIRL, Multiavatar.Theme.B);
+        Multiavatar.Version versionC = new Multiavatar.Version(Multiavatar.AvatarCharacter.GIRL, Multiavatar.Theme.C);
 
         String svgA = Multiavatar.generate("Test", false, versionA);
         String svgB = Multiavatar.generate("Test", false, versionB);

@@ -63,10 +63,10 @@ public class GenerateExamplesTest {
         String testInput = "Version Test";
         for (int characterIndex = 0; characterIndex < 3; characterIndex++) {
             Multiavatar.AvatarCharacter character = Multiavatar.AvatarCharacter.fromIndex(characterIndex);
-            for (char theme : new char[]{'A', 'B', 'C'}) {
+            for (Multiavatar.Theme theme : Multiavatar.Theme.values()) {
                 Multiavatar.Version version = new Multiavatar.Version(character, theme);
                 String svg = Multiavatar.generate(testInput, false, version);
-                String filename = "version_char" + character.getId() + "_theme" + theme + ".svg";
+                String filename = "version_char" + character.getId() + "_theme" + theme.getCode() + ".svg";
                 writeToFile(new File(examplesDir, filename), svg);
             }
         }

@@ -256,7 +256,7 @@ public class Multiavatar {
 
             PartWithTheme partWithTheme = parts.getValue(part);
             AvatarCharacter character = partWithTheme.character;
-            char theme = partWithTheme.theme.getCode();
+            Theme theme = partWithTheme.theme;
 
             if (version != null) {
                 character = version.character;
@@ -284,7 +284,7 @@ public class Multiavatar {
     /**
      * Gets the final SVG string for a part with colors applied from the theme
      */
-    private static String getFinalSvg(AvatarPart part, AvatarCharacter character, char theme) {
+    private static String getFinalSvg(AvatarPart part, AvatarCharacter character, Theme theme) {
         if (character == null) {
             return "";
         }
@@ -371,9 +371,9 @@ public class Multiavatar {
      */
     public static class Version {
         public AvatarCharacter character;
-        public char theme;   // 'A', 'B', or 'C'
+        public Theme theme;
 
-        public Version(AvatarCharacter character, char theme) {
+        public Version(AvatarCharacter character, Theme theme) {
             this.character = character;
             this.theme = theme;
         }

@@ -10,7 +10,7 @@ import java.nio.file.Paths;
 public class CompareJsJavaOutput {
     public static void main(String[] args) throws Exception {
         String input = "Test";
-        Multiavatar.Version version = new Multiavatar.Version(Multiavatar.AvatarCharacter.GEEKNOT, 'A');
+        Multiavatar.Version version = new Multiavatar.Version(Multiavatar.AvatarCharacter.GEEKNOT, Multiavatar.Theme.A);
 
         // Generate using Java
         String javaOutput = Multiavatar.generate(input, false, version);

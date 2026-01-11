@@ -28,23 +28,17 @@ class ThemeData {
     }
 
     static class CharacterThemes {
-        Theme A;
-        Theme B;
-        Theme C;
+        private final EnumMap<Multiavatar.Theme, Theme> themes;
 
         CharacterThemes(Theme A, Theme B, Theme C) {
-            this.A = A;
-            this.B = B;
-            this.C = C;
+            this.themes = new EnumMap<>(Multiavatar.Theme.class);
+            this.themes.put(Multiavatar.Theme.A, A);
+            this.themes.put(Multiavatar.Theme.B, B);
+            this.themes.put(Multiavatar.Theme.C, C);
         }
 
-        Theme getTheme(char themeName) {
-            switch (themeName) {
-                case 'A': return A;
-                case 'B': return B;
-                case 'C': return C;
-                default: return A;
-            }
+        Theme getTheme(Multiavatar.Theme theme) {
+            return themes.get(theme);
         }
     }
 

@@ -18,7 +18,7 @@ public class DebugTest {
         ThemeData.CharacterThemes themes = ThemeData.getCharacterThemes(Multiavatar.AvatarCharacter.ROBO);
         System.out.println("\nThemes for ROBO: " + (themes != null ? "Found" : "NULL"));
         if (themes != null) {
-            ThemeData.Theme themeA = themes.getTheme('A');
+            ThemeData.Theme themeA = themes.getTheme(Multiavatar.Theme.A);
             System.out.println("Theme A env colors: " + java.util.Arrays.toString(themeA.env));
         }
     }

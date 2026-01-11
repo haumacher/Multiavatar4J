@@ -2,11 +2,11 @@ package com.multiavatar;
 
 public class TestChar05Debug {
     public static void main(String[] args) {
-        // Get theme for character 05A
-        ThemeData.CharacterThemes ct = ThemeData.getCharacterThemes("05");
+        // Get theme for character GEEKNOT (05) Theme A
+        ThemeData.CharacterThemes ct = ThemeData.getCharacterThemes(Multiavatar.AvatarCharacter.GEEKNOT);
         ThemeData.Theme theme = ct.getTheme('A');
         String[] eyes = theme.eyes;
-        System.out.println("Character 05 Theme A eyes colors (" + eyes.length + " total):");
+        System.out.println("Character GEEKNOT (05) Theme A eyes colors (" + eyes.length + " total):");
         for (int i = 0; i < eyes.length; i++) {
             System.out.println("  " + i + ": " + eyes[i]);
         }

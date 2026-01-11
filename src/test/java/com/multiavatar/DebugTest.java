@@ -13,8 +13,8 @@ public class DebugTest {
         System.out.println("\nSVG Part ROBO/ENV: " + (svgPart != null ? svgPart.substring(0, Math.min(100, svgPart.length())) : "NULL"));
 
         // Test theme data
-        ThemeData.CharacterThemes themes = ThemeData.getCharacterThemes("00");
-        System.out.println("\nThemes for 00: " + (themes != null ? "Found" : "NULL"));
+        ThemeData.CharacterThemes themes = ThemeData.getCharacterThemes(Multiavatar.AvatarCharacter.ROBO);
+        System.out.println("\nThemes for ROBO: " + (themes != null ? "Found" : "NULL"));
         if (themes != null) {
             ThemeData.Theme themeA = themes.getTheme('A');
             System.out.println("Theme A env colors: " + java.util.Arrays.toString(themeA.env));

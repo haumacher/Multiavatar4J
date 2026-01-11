@@ -1,10 +1,9 @@
 package com.multiavatar;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.EnumMap;
 
 /**
- * Contains all theme color data for the 16 base characters (00-15).
+ * Contains all theme color data for the 16 base characters.
  * Each character has 3 themes (A, B, C) with colors for 6 parts:
  * env, clo, head, mouth, eyes, top
  */
@@ -49,17 +48,17 @@ class ThemeData {
         }
     }
 
-    private static final Map<String, CharacterThemes> THEMES = createThemes();
+    private static final EnumMap<Multiavatar.AvatarCharacter, CharacterThemes> THEMES = createThemes();
 
-    static CharacterThemes getCharacterThemes(String characterId) {
-        return THEMES.get(characterId);
+    static CharacterThemes getCharacterThemes(Multiavatar.AvatarCharacter character) {
+        return THEMES.get(character);
     }
 
-    private static Map<String, CharacterThemes> createThemes() {
-        Map<String, CharacterThemes> themes = new HashMap<>();
+    private static EnumMap<Multiavatar.AvatarCharacter, CharacterThemes> createThemes() {
+        EnumMap<Multiavatar.AvatarCharacter, CharacterThemes> themes = new EnumMap<>(Multiavatar.AvatarCharacter.class);
 
         // Character 00 - Robo
-        themes.put("00", new CharacterThemes(
+        themes.put(Multiavatar.AvatarCharacter.ROBO, new CharacterThemes(
             new Theme(
                 new String[]{"#ff2f2b"},
                 new String[]{"#fff", "#000"},
@@ -87,7 +86,7 @@ class ThemeData {
         ));
 
         // Character 01 - Girl
-        themes.put("01", new CharacterThemes(
+        themes.put(Multiavatar.AvatarCharacter.GIRL, new CharacterThemes(
             new Theme(
                 new String[]{"#a50000"},
                 new String[]{"#f06", "#8e0039"},
@@ -115,7 +114,7 @@ class ThemeData {
         ));
 
         // Character 02 - Blonde
-        themes.put("02", new CharacterThemes(
+        themes.put(Multiavatar.AvatarCharacter.BLONDE, new CharacterThemes(
             new Theme(
                 new String[]{"#ff7520"},
                 new String[]{"#d12823"},
@@ -143,7 +142,7 @@ class ThemeData {
         ));
 
         // Character 03 - Evilnormie
-        themes.put("03", new CharacterThemes(
+        themes.put(Multiavatar.AvatarCharacter.GUY, new CharacterThemes(
             new Theme(
                 new String[]{"#6FC30E"},
                 new String[]{"#b4e1fa", "#5b5d6e", "#515262", "#a0d2f0", "#a0d2f0"},
@@ -171,7 +170,7 @@ class ThemeData {
         ));
 
         // Character 04 - Country
-        themes.put("04", new CharacterThemes(
+        themes.put(Multiavatar.AvatarCharacter.COUNTRY, new CharacterThemes(
             new Theme(
                 new String[]{"#fc0"},
                 new String[]{"#901e0e", "#ffbe1e", "#ffbe1e", "#c55f54"},
@@ -199,7 +198,7 @@ class ThemeData {
         ));
 
         // Character 05 - Geeknot
-        themes.put("05", new CharacterThemes(
+        themes.put(Multiavatar.AvatarCharacter.GEEKNOT, new CharacterThemes(
             new Theme(
                 new String[]{"#a09300"},
                 new String[]{"#c7d4e2", "#435363", "#435363", "#141720", "#141720", "#e7ecf2", "#e7ecf2"},
@@ -227,7 +226,7 @@ class ThemeData {
         ));
 
         // Character 06 - Asian
-        themes.put("06", new CharacterThemes(
+        themes.put(Multiavatar.AvatarCharacter.ASIAN, new CharacterThemes(
             new Theme(
                 new String[]{"#8acf00"},
                 new String[]{"#ee2829", "#ff0"},
@@ -255,7 +254,7 @@ class ThemeData {
         ));
 
         // Character 07 - Punk
-        themes.put("07", new CharacterThemes(
+        themes.put(Multiavatar.AvatarCharacter.PUNK, new CharacterThemes(
             new Theme(
                 new String[]{"#00deae"},
                 new String[]{"#ff0000"},
@@ -283,7 +282,7 @@ class ThemeData {
         ));
 
         // Character 08 - Afrohair
-        themes.put("08", new CharacterThemes(
+        themes.put(Multiavatar.AvatarCharacter.AFROHAIR, new CharacterThemes(
             new Theme(
                 new String[]{"#0df"},
                 new String[]{"#571e57", "#ff0"},
@@ -311,7 +310,7 @@ class ThemeData {
         ));
 
         // Character 09 - Normie Female
-        themes.put("09", new CharacterThemes(
+        themes.put(Multiavatar.AvatarCharacter.NORMIE_FEMALE, new CharacterThemes(
             new Theme(
                 new String[]{"#4aff0c"},
                 new String[]{"#101010", "#fff", "#fff"},
@@ -339,7 +338,7 @@ class ThemeData {
         ));
 
         // Character 10 - Older
-        themes.put("10", new CharacterThemes(
+        themes.put(Multiavatar.AvatarCharacter.OLDER, new CharacterThemes(
             new Theme(
                 new String[]{"#104c8c"},
                 new String[]{"#354B65", "#3D8EBB", "#89D0DA", "#00FFFD"},
@@ -367,7 +366,7 @@ class ThemeData {
         ));
 
         // Character 11 - Firehair
-        themes.put("11", new CharacterThemes(
+        themes.put(Multiavatar.AvatarCharacter.FIREHAIR, new CharacterThemes(
             new Theme(
                 new String[]{"#4a3f73"},
                 new String[]{"#e6e9ee", "#f1543f", "#ff7058", "#fff", "#fff"},
@@ -395,7 +394,7 @@ class ThemeData {
         ));
 
         // Character 12 - Blond
-        themes.put("12", new CharacterThemes(
+        themes.put(Multiavatar.AvatarCharacter.BLOND, new CharacterThemes(
             new Theme(
                 new String[]{"#2668DC"},
                 new String[]{"#2385c6", "#b8d0e0", "#b8d0e0"},
@@ -423,7 +422,7 @@ class ThemeData {
         ));
 
         // Character 13 - Ateam
-        themes.put("13", new CharacterThemes(
+        themes.put(Multiavatar.AvatarCharacter.ATEAM, new CharacterThemes(
             new Theme(
                 new String[]{"#d10084"},
                 new String[]{"#efedee", "#00a1e0", "#00a1e0", "#efedee", "#ffce1c"},
@@ -451,7 +450,7 @@ class ThemeData {
         ));
 
         // Character 14 - Rasta
-        themes.put("14", new CharacterThemes(
+        themes.put(Multiavatar.AvatarCharacter.RASTA, new CharacterThemes(
             new Theme(
                 new String[]{"#fc0065"},
                 new String[]{"#708913", "#fdea14", "#708913", "#fdea14", "#708913"},
@@ -479,7 +478,7 @@ class ThemeData {
         ));
 
         // Character 15 - Meta
-        themes.put("15", new CharacterThemes(
+        themes.put(Multiavatar.AvatarCharacter.STREET, new CharacterThemes(
             new Theme(
                 new String[]{"#111"},
                 new String[]{"#000", "#00FFFF"},

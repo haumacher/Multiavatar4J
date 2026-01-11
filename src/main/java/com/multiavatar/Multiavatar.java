@@ -259,7 +259,7 @@ public class Multiavatar {
         }
 
         // Get theme colors
-        ThemeData.CharacterThemes characterThemes = ThemeData.getCharacterThemes(partId);
+        ThemeData.CharacterThemes characterThemes = ThemeData.getCharacterThemes(character);
         if (characterThemes == null) {
             return "";
         }

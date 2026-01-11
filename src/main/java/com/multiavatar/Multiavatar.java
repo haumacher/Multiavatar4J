@@ -27,34 +27,34 @@ public class Multiavatar {
     private static final String STROKE = "stroke-linecap:round;stroke-linejoin:round;stroke-width:";
 
     /**
-     * Generates an avatar SVG from the given string.
+     * Generates an avatar SVG from the given identifier.
      *
-     * @param string The input string to generate the avatar from
+     * @param id The identifier to generate the avatar from (e.g., username, email)
      * @return The complete SVG code as a string
      */
-    public static String generate(String string) {
-        return generate(string, false);
+    public static String generate(String id) {
+        return generate(id, false);
     }
 
     /**
-     * Generates an avatar SVG from the given string.
+     * Generates an avatar SVG from the given identifier.
      *
-     * @param string  The input string to generate the avatar from
+     * @param id      The identifier to generate the avatar from (e.g., username, email)
      * @param sansEnv If true, returns the avatar without the circular background
      * @return The complete SVG code as a string
      */
-    public static String generate(String string, boolean sansEnv) {
-        if (string == null) {
-            string = "";
+    public static String generate(String id, boolean sansEnv) {
+        if (id == null) {
+            id = "";
         }
 
         // Return empty string for empty input (JavaScript compatibility)
-        if (string.length() == 0) {
+        if (id.length() == 0) {
             return "";
         }
 
-        Avatar avatar = Avatar.fromId(string);
-        return renderAvatar(avatar, sansEnv);
+        Avatar avatar = Avatar.fromId(id);
+        return avatar.render(sansEnv);
     }
 
     /**
@@ -78,30 +78,7 @@ public class Multiavatar {
      */
     public static String generate(CharacterType character, CharacterTheme theme, boolean sansEnv) {
         Avatar avatar = Avatar.fromCharacterTheme(character, theme);
-        return renderAvatar(avatar, sansEnv);
-    }
-
-    /**
-     * Renders an avatar to SVG format
-     */
-    private static String renderAvatar(Avatar avatar, boolean sansEnv) {
-        StringBuilder result = new StringBuilder(SVG_START);
-
-        // Add generator attribution (fulfills license requirement)
-        result.append("<metadata xmlns:dc=\"http://purl.org/dc/elements/1.1/\"><dc:creator>Multiavatar</dc:creator><dc:source>https://multiavatar.com</dc:source></metadata>");
-
-        for (AvatarPart part : AvatarPart.values()) {
-            if (part == AvatarPart.ENV && sansEnv) {
-                continue; // Skip environment if sansEnv is true
-            }
-
-            Coordinate coordinate = avatar.getValue(part);
-            String svgPart = getFinalSvg(part, coordinate.character, coordinate.theme);
-            result.append(svgPart);
-        }
-
-        result.append(SVG_END);
-        return result.toString();
+        return avatar.render(sansEnv);
     }
 
     /**
@@ -196,9 +173,9 @@ public class Multiavatar {
 	        }
 	    }
 	    
-		public static Avatar fromId(String string) {
+		public static Avatar fromId(String id) {
 			// Get SHA-256 hash
-	        String hash = sha256(string);
+	        String hash = sha256(id);
 
 	        // Remove all non-digits from hash (JavaScript compatibility)
 	        String hashDigitsOnly = hash.replaceAll("\\D", "");
@@ -232,6 +209,32 @@ public class Multiavatar {
 			avatar.eyes = coordinate;
 			avatar.top = coordinate;
 			return avatar;
+		}
+
+		/**
+		 * Renders this avatar to SVG format
+		 *
+		 * @param sansEnv If true, renders without the circular background
+		 * @return The complete SVG code as a string
+		 */
+		String render(boolean sansEnv) {
+			StringBuilder result = new StringBuilder(SVG_START);
+
+			// Add generator attribution (fulfills license requirement)
+			result.append("<metadata xmlns:dc=\"http://purl.org/dc/elements/1.1/\"><dc:creator>Multiavatar</dc:creator><dc:source>https://multiavatar.com</dc:source></metadata>");
+
+			for (AvatarPart part : AvatarPart.values()) {
+				if (part == AvatarPart.ENV && sansEnv) {
+					continue; // Skip environment if sansEnv is true
+				}
+
+				Coordinate coordinate = getValue(part);
+				String svgPart = getFinalSvg(part, coordinate.character, coordinate.theme);
+				result.append(svgPart);
+			}
+
+			result.append(SVG_END);
+			return result.toString();
 		}
 
 	}

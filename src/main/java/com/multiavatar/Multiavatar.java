@@ -31,7 +31,7 @@ public class Multiavatar {
     /**
      * Avatar part names in the order they should be rendered
      */
-    private enum AvatarPart {
+    enum AvatarPart {
         ENV("env"),
         HEAD("head"),
         CLO("clo"),
@@ -206,7 +206,7 @@ public class Multiavatar {
         String[] colors = getColorsForPart(themeData, part);
 
         // Get SVG template
-        String svgTemplate = SvgData.getSvgPart(partId, part.getName());
+        String svgTemplate = SvgData.getSvgPart(partId, part);
         if (svgTemplate == null || svgTemplate.isEmpty()) {
             return "";
         }

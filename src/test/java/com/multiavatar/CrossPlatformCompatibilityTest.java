@@ -4,6 +4,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -93,6 +94,14 @@ public class CrossPlatformCompatibilityTest {
                     );
                     failures.add(failureMsg);
                     System.err.println(failureMsg);
+                    
+                    File failureDir = new File("target/failures");
+                    if (!failureDir.exists()) {
+                        failureDir.mkdirs();
+                    }
+                    
+                    GenerateExamplesTest.writeToFile(new File(failureDir, vector.id + "-expected.svg"), vector.output);
+                    GenerateExamplesTest.writeToFile(new File(failureDir, vector.id + "-failure.svg"), javaOutputStripped);
                 }
             } catch (Exception e) {
                 failed++;

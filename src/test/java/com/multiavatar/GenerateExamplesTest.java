@@ -4,6 +4,7 @@ import org.junit.Test;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
 
 /**
  * Test that generates example SVG files for manual inspection.
@@ -84,7 +85,7 @@ public class GenerateExamplesTest {
     /**
      * Write content to file
      */
-    private void writeToFile(File file, String content) throws IOException {
+    static void writeToFile(File file, String content) throws IOException {
         try (FileWriter writer = new FileWriter(file)) {
             writer.write(content);
         }
